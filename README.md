@@ -1,7 +1,5 @@
-# Temperos-Emporio
-"Website oficial do Temperos Emporio Gourmet - Explore nossos produtos artesanais, orgânicos e especiais."
-
 # 🌿 Temperos Emporio Gourmet - Website Oficial
+"Website oficial do Temperos Emporio Gourmet - Explore nossos produtos artesanais, orgânicos e especiais."
 
 ## 💡 Sobre o Temperos Emporio Gourmet
 
