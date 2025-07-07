@@ -23,7 +23,8 @@ Este website foi projetado para ser:
 Este projeto foi construído utilizando as seguintes tecnologias:
 
 * **Frontend:**
-    * [JavaScript (com framework/biblioteca React)]
+    * [JavaScrip]
+    * [Vite]
 * **Backend:**
     * [Node.js]
     * [Banco de Dados: MySQL]

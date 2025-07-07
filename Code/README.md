@@ -1,11 +1,11 @@
 # 🌿 Temperos Emporio Gourmet - Website Oficial
 "Website oficial do Temperos Emporio Gourmet - Explore nossos produtos artesanais, orgânicos e especiais."
 
-# ⚙️ Código-Fonte do Temperos Empório Gourmet
+## ⚙️ Código-Fonte do Temperos Empório Gourmet
 
 Este diretório contém o código-fonte completo do website do Temperos Empório Gourmet. Ele está estruturado em duas partes principais: **Front-End** e **Back-End**.
 
-## Estrutura
+### Estrutura
 
 * **`Front-End`**: Contém todo o código relacionado à interface do usuário, desenvolvido com **React**.
     * [Acesse o README do Front-End para mais detalhes](./Front-End/README.md)
