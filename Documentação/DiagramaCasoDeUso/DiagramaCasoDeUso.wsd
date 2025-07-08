@@ -1,0 +1,48 @@
+@startuml Caso De Uso
+
+skinparam actorStyle awesome
+skinparam usecaseStyle ellipse
+
+actor Usuario as US
+actor Cliente as CL
+actor Admin as AD
+
+' Definindo as heranças dos atores
+CL --|> US
+AD --|> US
+
+rectangle "Funcionalidades Gerais" {
+  usecase "Fazer Login" as FL
+  usecase "Cadastrar no Sistema" as CS
+
+  US --> FL
+  US --> CS
+}
+
+rectangle "Funcionalidades do Cliente" {
+  usecase "Visualizar Produtos" as VP
+  usecase "Filtrar Produtos" as FP
+  usecase "Adicionar ao Carrinho" as AC
+  usecase "Avaliar Produto" as AP
+
+  CL --> VP
+  CL --> FP
+  CL --> AC
+  CL --> AP
+}
+
+rectangle "Funcionalidades do Administrador" {
+  usecase "Gerenciar Produtos" as GP
+  usecase "Criar Novo Produto" as CNP
+  usecase "Editar Produto" as EP
+  usecase "Remover Produto" as RP
+
+  ' Relacionamentos de inclusão/extensão para Gerenciar Produtos
+  GP <.. (CNP) : include
+  GP <.. (EP) : include
+  GP <.. (RP) : include
+
+  AD --> GP
+}
+
+@enduml

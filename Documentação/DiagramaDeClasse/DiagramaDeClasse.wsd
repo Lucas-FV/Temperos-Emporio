@@ -1,0 +1,72 @@
+@startuml Classe
+
+skinparam handwritten false ' Deixa o diagrama mais "limpo" e não "desenhado a mão"
+skinparam classAttributeIconSize 0 ' Remove ícones de visibilidade para atributos
+skinparam classMethodIconSize 0    ' Remove ícones de visibilidade para métodos
+skinparam linetype ortho           ' Tenta usar linhas retas (ortogonais) para as associações
+skinparam defaultFontName "Arial"   ' Define uma fonte mais comum
+skinparam defaultFontSize 12       ' Define um tamanho de fonte padrão
+skinparam defaultTextAlignment center
+
+class Produto {
+  - Nome : String
+  - Peso : Double 
+  - Descrição : String
+  - Preço : Double
+  - Avaliação : Float 
+  - Categoria : Categoria
+  + ObterDetalhes() 
+}
+
+enum Categoria {
+  Geleia
+  Biscoitos
+  Bebidas
+  Queijos
+  Temperos
+  Doces
+  Azeites
+}
+
+class Usuario {
+  - Email : String
+  - Senha : String
+  + CadastrarUsuario()
+  + FazerLogin()
+}
+
+class Cliente {
+  - Endereço : String
+  - Telefone : String
+  + AvaliarProduto()
+  + FiltrarProdutos()
+}
+
+class Avaliacao {
+  - Nota : Int
+  - Comentario : String
+  - Data : Date
+}
+
+class Admin {
+  + CriarProduto()
+  + RemoverProduto()
+  + EditarProduto()
+  + GerenciarPedidos()
+  + GerenciarUsuarios()
+}
+
+' --- Relacionamentos ---
+
+' Herança: Cliente e Admin são tipos de Usuário
+Admin -up-|> Usuario
+Cliente -up-|> Usuario
+
+' Associação entre Produto e Categoria
+Categoria "1" -right-> "*" Produto : contém >
+
+' Associação entre Cliente e Produto
+Cliente "1" -right-> "*" Avaliacao : realiza >
+Produto "1" -down---> "*" Avaliacao : recebe >
+
+@enduml
