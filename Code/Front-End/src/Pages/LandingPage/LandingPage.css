@@ -1,53 +1,140 @@
-.landing-page{
-   padding: 0;
-   margin: 0;
-   min-height: 100%;
+.landing-page {
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
 }
 
-.principal-section{
-   min-height: 80vh;
-   background-color: #91302C;
-   display: flex;
-   align-items: center;
-   padding: 1rem 2rem;
-   color: white;
+/* ------------------------------------------------------------------ */
+/* SEÇÃO 1: HERO SECTION (Fundo Marrom-Escuro) */
+/* ------------------------------------------------------------------ */
+
+.principal-section {
+  min-height: 80vh;
+  background-color: #91302c;
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  color: white;
 }
 
-.principal-content{
-   max-width: 650px;
+.principal-content {
+  max-width: 650px;
 }
 
-.principal-section .title{
-   margin-top: 0;
-   margin-bottom: 1rem;
-   font-size: 3rem;
-   font-weight: bold;
+.principal-section .title {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 3rem;
+  font-weight: bold;
 }
 
-.principal-section .subtitle{
-   font-size: 1.5rem;
-   line-height: 1.5;
-   margin-bottom: 2rem;
+.principal-section .subtitle {
+  font-size: 1.5rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
 }
 
-.button-group{
-   display: flex;
-   gap: 1rem;
+.button-group {
+  display: flex;
+  gap: 1rem;
 }
 
-.cta-button{
-   padding: 0.75rem 1.5rem;
-   border-radius: 6px;
-   font-size: 1rem;
-   cursor: pointer;
-   border: 2px solid black;
-   background-color: white;
-   color: #91302C;
-   font-weight: bold;
+.cta-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: 2px solid black;
+  background-color: white;
+  color: #91302c;
+  font-weight: bold;
 }
 
-.cta-button:hover{
-   background-color: #91302C;
-   color: white;
+.cta-button:hover {
+  background-color: #91302c;
+  color: white;
+}
 
+/* ------------------------------------------------------------------ */
+/* SEÇÃO 2: PRODUTOS (Fundo Branco/Claro) */
+/* ------------------------------------------------------------------ */
+
+.products-section {
+  min-height: 700px;
+  background-color: white;
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.section-description {
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  color: #555;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-card {
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.25);
+}
+
+.product-image-placeholder {
+  width: 100%;
+  height: 180px;
+  background-color: #ccc;
+  border-radius: 4px;   
+  margin-bottom: 1rem;
+}
+
+.product-price {
+  text-align: left;
+  font-size: 20px;
+  font-weight: 700;
+  color: #91302c;
+  margin: 0.5rem, 0 0.5rem 0;
+}
+
+.product-button {
+  background-color: #91302c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.view-all-container {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.view-all-button {
+  color: white;
+  background-color: #91302c;
+  border: none;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
