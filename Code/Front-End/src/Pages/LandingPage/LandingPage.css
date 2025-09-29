@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
 .landing-page {
   padding: 0;
   margin: 0;
   min-height: 100%;
+  font-family: 'Poppins', sans-serif; /* Aplica a fonte Poppins ao corpo do site */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ------------------------------------------------------------------ */
@@ -13,7 +18,7 @@
   background-color: #91302c;
   display: flex;
   align-items: center;
-  padding: 1rem 2rem;
+  padding: 4rem 2rem;
   color: white;
 }
 
@@ -46,13 +51,12 @@
   cursor: pointer;
   border: 2px solid black;
   background-color: white;
-  color: #91302c;
+  color: black;
   font-weight: bold;
 }
 
 .cta-button:hover {
-  background-color: #91302c;
-  color: white;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.6);
 }
 
 /* ------------------------------------------------------------------ */
@@ -105,7 +109,19 @@
   margin-bottom: 1rem;
 }
 
+.product-name{
+  font-family: 'Poppins', sans-serif; /* Aplica a fonte Poppins ao corpo do site */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 500;
+  font-size: 20px;
+  text-align: left;
+}
+
 .product-price {
+  font-family: 'Poppins', sans-serif; /* Aplica a fonte Poppins ao corpo do site */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: left;
   font-size: 20px;
   font-weight: 700;
@@ -121,6 +137,9 @@
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
+  font-family: 'Poppins', sans-serif; /* Aplica a fonte Poppins ao corpo do site */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .view-all-container {
