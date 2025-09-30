@@ -49,6 +49,12 @@ function LandingPage() {
             <button className="view-all-button">Ver Todos os Produtos</button>
           </div>
         </section>
+        <section className="historia-sectio">
+          <div className="historia-content">
+            <h2 className="historia-title">Nossa História</h2>
+            
+          </div>
+        </section>
       </main>
     </div>
   );
