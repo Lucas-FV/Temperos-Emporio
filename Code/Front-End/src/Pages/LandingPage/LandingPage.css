@@ -101,6 +101,10 @@
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.25);
 }
 
+.product-card:hover{
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
+}
+
 .product-image-placeholder {
   width: 100%;
   height: 180px;
@@ -156,4 +160,181 @@
   border-radius: 30px;
   cursor: pointer;
   transition: background-color 0.3s;
+}
+
+/* ------------------------------------------------------------------ */
+/* SEÇÃO 3: NOSSA HISTÓRIA (Fundo Marrom-Escuro) */
+/* ------------------------------------------------------------------ */
+
+.history-section {
+    background-color: #91302c; 
+    min-height: 500px;
+    padding: 6rem 8%; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4rem;
+    color: white;
+}
+
+.history-content {
+    flex: 1;
+    max-width: 55%; 
+}
+
+.history-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 2rem;
+}
+
+.history-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.history-image-container {
+    flex: 1;
+    max-width: 550px; 
+}
+
+.history-placeholder {
+    width: 100%;
+    height: 400px; 
+    background-color: #e0e0e0; 
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* ------------------------------------------------------------------ */
+/* SEÇÃO 4: VISITE NOSSA LOJA (Fundo Branco/Claro) */
+/* ------------------------------------------------------------------ */
+
+.store-section {
+    background-color: white; /* Fundo branco */
+    padding: 6rem 8%;
+    text-align: center;
+}
+
+.store-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 3rem;
+    color: #333;
+}
+
+.store-content-grid {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinha o topo do cartão e do mapa */
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Estilos para o Cartão de Contato (Lado Esquerdo) */
+.contact-card {
+    background-color: #91302c; /* Fundo Marrom-Escuro */
+    color: white;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra para destacar o cartão */
+    max-width: 450px;
+    flex-shrink: 0; /* Impede que ele encolha */
+    text-align: left;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+
+.icon-placeholder {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    width: 30px; /* Garante que os ícones fiquem alinhados */
+    text-align: center;
+}
+
+.contact-item p {
+    margin: 0;
+}
+
+/* Estilos para Redes Sociais */
+.social-links {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.social-links p {
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+}
+
+.social-icons .icon-placeholder {
+    font-size: 2rem;
+    cursor: pointer;
+    margin-right: 1.5rem;
+    /* Remove o width fixo para os ícones de redes sociais */
+    width: auto; 
+}
+
+/* Estilos para o Placeholder do Mapa (Lado Direito) */
+.map-placeholder-container {
+    flex-grow: 1; /* Permite que o mapa ocupe o espaço restante */
+    max-width: 600px;
+}
+
+.map-placeholder {
+    width: 100%;
+    height: 435px; 
+    background-color: #e0e0e0; 
+    border-radius: 10px;
+}
+
+.social-links {
+    /* Garante que o texto 'Siga-nos nas Redes Sociais' fique acima dos ícones */
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    text-align: center; /* Centraliza o texto e os ícones */
+}
+
+.social-links p {
+    font-weight: bold;
+    margin-bottom: 1rem; /* Aumenta o espaço entre o texto e os ícones */
+    /* Garante que o texto tenha a cor branca do card */
+    color: white; 
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center; /* Centraliza os ícones horizontalmente */
+    gap: 1.5rem; /* Adiciona espaço entre os ícones */
+}
+
+/* O Segredo: Estilizando a tag SVG gerada pelo Font Awesome */
+.social-icons svg {
+    /* Define o tamanho do ícone */
+    width: 30px; 
+    height: 30px;
+    
+    /* Define a cor dos ícones (branco, como no seu cartão marrom) */
+    color: white; 
+    
+    /* Transição para efeito de hover suave */
+    transition: color 0.3s ease; 
+}
+
+.social-icons svg:hover {
+    /* Efeito de destaque ao passar o mouse */
+    color: #e0e0e0; /* Um branco levemente mais claro */
+    cursor: pointer;
 }

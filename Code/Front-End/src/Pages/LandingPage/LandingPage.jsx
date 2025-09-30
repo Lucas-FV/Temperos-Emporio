@@ -1,6 +1,12 @@
 import React from "react";
 import Navbar from "../../Componentes/Navbar/Navbar";
 import "./LandingPage.css";
+import { FaInstagram } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+import { CiAlarmOn } from "react-icons/ci";
+import { ImPhone } from "react-icons/im";
+import { VscLocation } from "react-icons/vsc";
+import { HiMail } from "react-icons/hi";
 
 const ProductCard = ({ name, price }) => (
   <div className="product-card">
@@ -49,10 +55,67 @@ function LandingPage() {
             <button className="view-all-button">Ver Todos os Produtos</button>
           </div>
         </section>
-        <section className="historia-sectio">
-          <div className="historia-content">
-            <h2 className="historia-title">Nossa História</h2>
-            
+        <section className="history-section">
+          <div className="history-content">
+            <h2 className="history-title">Nossa História</h2>
+            <p>
+              Fundado em 2025, o Temperos Empório Gourmet nasceu da paixão por
+              produtos autênticos e de qualidade, trazendo o melhor para nossos
+              clientes.
+            </p>
+            <p>
+              Buscamos incansavelmente os melhores produtos artesanais,
+              visitando feiras, fazendas e oficinas para trazer até você o que
+              há de melhor na produção artesanal brasileira.
+            </p>
+            <p>
+              Nossa missão é conectar produtores talentosos diretamente aos
+              consumidores, preservando técnicas tradicionais e promovendo uma
+              alimentação mais consciente e saborosa.
+            </p>
+          </div>
+          <div className="history-image-container">
+            <div className="history-placeholder"></div>
+          </div>
+        </section>
+        <section className="store-section">
+          <h2 className="store-title">Visite Nossa Loja</h2>
+          <div className="store-content-grid">
+            <div className="contact-card">
+              {/*Endereço*/}
+              <div className="contact-item">
+                <VscLocation/>
+                <p>
+                  Avenida Carandaí 415 B <br />
+                  Funcionários - Belo Horizonte MG
+                </p>
+              </div>
+              {/*Telefone*/}
+              <div className="contact-item">
+                <ImPhone/>
+                <p>+55 31 98334-9591</p>
+              </div>
+              {/* Email */}
+              <div className="contact-item">
+                <HiMail/>
+                <p>temperos@gmail.com</p>
+              </div>
+              {/* Horário */}
+              <div className="contact-item">
+                <CiAlarmOn/>
+                <p>Segunda a Sexta: 9h às 19h</p>
+              </div>
+              <div className="social-links">
+                <p>Siga-nos nas Redes Sociais</p>
+                <div className="social-icons">
+                  <FaInstagram />
+                  <FaFacebook />
+                </div>
+              </div>
+            </div>
+            <div className="map-placeholder-container">
+              <div className="map-placeholder"></div>
+            </div>
           </div>
         </section>
       </main>
