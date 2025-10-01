@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "../../Componentes/Navbar/Navbar";
+import Footer from "../../Componentes/Footer/Footer";
 import "./LandingPage.css";
 import { FaInstagram } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
@@ -117,6 +118,7 @@ function LandingPage() {
           </div>
         </section>
       </main>
+      <Footer/>
     </div>
   );
 }

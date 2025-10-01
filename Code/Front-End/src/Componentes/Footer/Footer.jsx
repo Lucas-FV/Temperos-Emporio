@@ -2,6 +2,8 @@ import React from "react";
 import { FaShoppingBag } from "react-icons/fa";
 import "./Footer.css";
 
+const currentYear = new Date().getFullYear();
+
 const Footer = () => {
   return (
     <footer className="main-footer">
@@ -51,8 +53,10 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-copyright">
-         <p>© 2025 Temperos Empório. Todos os direitos reservados</p>
+         <p>© {currentYear} Temperos Empório. Todos os direitos reservados</p>
       </div>
     </footer>
   );
 };
+
+export default Footer;
