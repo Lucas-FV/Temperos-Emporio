@@ -249,7 +249,7 @@
 
 .contact-item {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 1.5rem;
     font-size: 1.1rem;
     line-height: 1.4;
@@ -297,14 +297,22 @@
     height: 435px; 
     background-color: #e0e0e0; 
     border-radius: 10px;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
+}
+
+.contact-card .icons{
+  color: white;
+  width: 24px;
+  height: 24px;
+  margin-right: 1rem;
+  flex-shrink: 0;
 }
 
 .social-links {
-    /* Garante que o texto 'Siga-nos nas Redes Sociais' fique acima dos ícones */
     border-top: 1px solid rgba(255, 255, 255, 0.3);
     padding-top: 1.5rem;
     margin-top: 1.5rem;
-    text-align: center; /* Centraliza o texto e os ícones */
+    text-align: center;
 }
 
 .social-links p {
@@ -316,25 +324,18 @@
 
 .social-icons {
     display: flex;
-    justify-content: center; /* Centraliza os ícones horizontalmente */
-    gap: 1.5rem; /* Adiciona espaço entre os ícones */
+    justify-content: center; 
+    gap: 1.5rem; 
 }
 
-/* O Segredo: Estilizando a tag SVG gerada pelo Font Awesome */
 .social-icons svg {
-    /* Define o tamanho do ícone */
     width: 30px; 
     height: 30px;
-    
-    /* Define a cor dos ícones (branco, como no seu cartão marrom) */
     color: white; 
-    
-    /* Transição para efeito de hover suave */
     transition: color 0.3s ease; 
 }
 
 .social-icons svg:hover {
-    /* Efeito de destaque ao passar o mouse */
-    color: #e0e0e0; /* Um branco levemente mais claro */
+    color: #e0e0e0;
     cursor: pointer;
 }

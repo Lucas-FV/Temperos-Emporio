@@ -84,7 +84,7 @@ function LandingPage() {
             <div className="contact-card">
               {/*Endereço*/}
               <div className="contact-item">
-                <VscLocation/>
+                <VscLocation className="icons"/>
                 <p>
                   Avenida Carandaí 415 B <br />
                   Funcionários - Belo Horizonte MG
@@ -92,24 +92,24 @@ function LandingPage() {
               </div>
               {/*Telefone*/}
               <div className="contact-item">
-                <ImPhone/>
+                <ImPhone className="icons"/>
                 <p>+55 31 98334-9591</p>
               </div>
               {/* Email */}
               <div className="contact-item">
-                <HiMail/>
+                <HiMail className="icons"/>
                 <p>temperos@gmail.com</p>
               </div>
               {/* Horário */}
               <div className="contact-item">
-                <CiAlarmOn/>
+                <CiAlarmOn className="icons"/>
                 <p>Segunda a Sexta: 9h às 19h</p>
               </div>
               <div className="social-links">
                 <p>Siga-nos nas Redes Sociais</p>
                 <div className="social-icons">
-                  <FaInstagram />
-                  <FaFacebook />
+                  <FaInstagram className="icons"/>
+                  <FaFacebook className="icons"/>
                 </div>
               </div>
             </div>
