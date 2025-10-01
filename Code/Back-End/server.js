@@ -8,7 +8,7 @@ const PORT = 3000;
 const app = express();
 
 //Importacao dos arquivos de rotas
-const loginRouts = require('./routes/Login/login')
+const loginRoutes = require('./routes/Login/login');
 
 //Middleware: Inicializa o CORS
 app.use(express.json());
@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 
 //MONTAGEM DAS ROTAS
 //Rota de login
-app.use('/login', loginRouts);
+app.use('/login', loginRoutes);
 
 //INICIO DO SERVIDOR
 app.listen(PORT, () =>{
