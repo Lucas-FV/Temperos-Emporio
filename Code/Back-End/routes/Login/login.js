@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
 
       //Consulta SQL
       const [rows] = await connection.execute(
-         'SELECT username, password_hash, cargo FROM usuarios WHERE username = ?',
+         'SELECT username, password_hash, email, cargo FROM usuarios WHERE username = ?',
          [username]
       );
 
@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
          return res.json({
             success: true,
             message: 'Login realizado com sucesso!!',
-            user: {username: user.username, cargo: user.cargo}
+            user: {username: user.username, email: user.email, cargo: user.cargo}
          })
       }
       else{
