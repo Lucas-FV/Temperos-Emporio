@@ -30,14 +30,12 @@ function LandingPage() {
               preservam o verdadeiro sabor da natureza!
             </p>
             <div className="button-group">
-              <button className="cta-button produtos">
-                Conheça nossos produtos
-              </button>
-              <button className="cta-button historia">Nossa História</button>
+              <a href="#produtos" className="cta-button produtos">Conheça Nossos Produtos</a>
+              <a href="#historia" className="cta-button historia">Nossa História</a>
             </div>
           </div>
         </section>
-        <section className="products-section">
+        <section className="products-section" id="produtos">
           <div className="header-content">
             <h2 className="section-title">Produtos em Destaque</h2>
             <p className="section-description">
@@ -55,7 +53,7 @@ function LandingPage() {
             <button className="view-all-button">Ver Todos os Produtos</button>
           </div>
         </section>
-        <section className="history-section">
+        <section className="history-section" id="historia">
           <div className="history-content">
             <h2 className="history-title">Nossa História</h2>
             <p>

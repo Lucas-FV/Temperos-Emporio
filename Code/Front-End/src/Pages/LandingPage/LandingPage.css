@@ -1,10 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
+html{
+  scroll-behavior: smooth;
+}
+
 .landing-page {
   padding: 0;
   margin: 0;
   min-height: 100%;
-  font-family: 'Poppins', sans-serif; /* Aplica a fonte Poppins ao corpo do site */
+  font-family: 'Poppins', sans-serif; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -53,6 +57,7 @@
   background-color: white;
   color: black;
   font-weight: bold;
+  text-decoration: none;
 }
 
 .cta-button:hover {
@@ -114,7 +119,7 @@
 }
 
 .product-name{
-  font-family: 'Poppins', sans-serif; /* Aplica a fonte Poppins ao corpo do site */
+  font-family: 'Poppins', sans-serif; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 500;
@@ -123,7 +128,7 @@
 }
 
 .product-price {
-  font-family: 'Poppins', sans-serif; /* Aplica a fonte Poppins ao corpo do site */
+  font-family: 'Poppins', sans-serif; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
@@ -141,7 +146,7 @@
   border-radius: 4px;
   cursor: pointer;
   width: 100%;
-  font-family: 'Poppins', sans-serif; /* Aplica a fonte Poppins ao corpo do site */
+  font-family: 'Poppins', sans-serif; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -214,7 +219,7 @@
 /* ------------------------------------------------------------------ */
 
 .store-section {
-    background-color: white; /* Fundo branco */
+    background-color: white; 
     padding: 6rem 8%;
     text-align: center;
 }
@@ -229,21 +234,20 @@
 .store-content-grid {
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Alinha o topo do cartão e do mapa */
+    align-items: flex-start; 
     gap: 3rem;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-/* Estilos para o Cartão de Contato (Lado Esquerdo) */
 .contact-card {
-    background-color: #91302c; /* Fundo Marrom-Escuro */
+    background-color: #91302c; 
     color: white;
     padding: 2.5rem;
     border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra para destacar o cartão */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); 
     max-width: 450px;
-    flex-shrink: 0; /* Impede que ele encolha */
+    flex-shrink: 0; 
     text-align: left;
 }
 
@@ -258,7 +262,7 @@
 .icon-placeholder {
     font-size: 1.5rem;
     margin-right: 1rem;
-    width: 30px; /* Garante que os ícones fiquem alinhados */
+    width: 30px; 
     text-align: center;
 }
 
@@ -282,13 +286,11 @@
     font-size: 2rem;
     cursor: pointer;
     margin-right: 1.5rem;
-    /* Remove o width fixo para os ícones de redes sociais */
     width: auto; 
 }
 
-/* Estilos para o Placeholder do Mapa (Lado Direito) */
 .map-placeholder-container {
-    flex-grow: 1; /* Permite que o mapa ocupe o espaço restante */
+    flex-grow: 1;
     max-width: 600px;
 }
 
