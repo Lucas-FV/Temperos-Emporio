@@ -1,6 +1,7 @@
 // src/components/Navbar/Navbar.jsx
 
 import React, { useState, useEffect, useRef } from 'react'; // Importe useRef
+import { Link } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -81,7 +82,9 @@ const Navbar = () => {
         </div>
       </div>
       <div className="navbar-right">
-        <button className="login-button">Login</button>
+        <Link to={"/login"} className='login-button'>
+            Login
+        </Link>
       </div>
     </nav>
   );

@@ -4,10 +4,10 @@ const router = express.Router();
 
 //Rota POST para login
 router.post('/', async (req, res) => {
-   const {username, password} = req.body;
+   const {email, password} = req.body;
 
-   if(!username || !password){
-      return res.status(400).json({sucesses: false, message:'Nome de usuário e senha são obrigatórios.'})
+   if(!email || !password){
+      return res.status(400).json({sucesses: false, message:'Email e senha são obrigatórios.'})
    }
 
    let connection;
@@ -16,12 +16,12 @@ router.post('/', async (req, res) => {
 
       //Consulta SQL
       const [rows] = await connection.execute(
-         'SELECT username, password_hash, email, cargo FROM usuarios WHERE username = ?',
-         [username]
+         'SELECT username, password_hash, email, cargo FROM usuarios WHERE email = ?',
+         [email]
       );
 
       if(rows.length === 0){
-         return res.status(401).json({ success: false, message: 'Nome de usuário ou senha inválidos.' });
+         return res.status(401).json({ success: false, message: 'Email ou senha inválidos.' });
       }
 
       const user = rows[0];
@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
          })
       }
       else{
-         return res.status(401).json({ success: false, message: 'Nome de usuário ou senha inválidos.' });
+         return res.status(401).json({ success: false, message: 'Email ou senha inválidos.' });
       }
    } catch (error){
       console.error('Erro de Servidor/DB: ', error);
