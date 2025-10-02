@@ -3,7 +3,7 @@ const mysql = require('mysql2/promise');
 const dbConfig = {
    host: 'localhost',
    user: 'root',
-   password: '1234',
+   password: 'SQL.2917',
    database: 'temperos_emporio'
 };
 

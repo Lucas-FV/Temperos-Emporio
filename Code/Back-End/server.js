@@ -7,6 +7,8 @@ const PORT = 3000;
 //Inicializa o Express
 const app = express();
 
+app.use(cors());
+
 //Importacao dos arquivos de rotas
 const loginRoutes = require('./routes/Login/login');
 

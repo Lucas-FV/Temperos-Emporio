@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import "./LoginPage.css";
 import axios from 'axios';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
+import "./LoginPage.css";
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -70,8 +72,7 @@ const LoginPage = () => {
                 disabled={loading}
               />
               <span className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
-                  Hide/Show
-                  {showPassword ? 'Hide' : 'Show'}
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
           </div>

@@ -37,6 +37,16 @@
   color: #333;
 }
 
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  padding-right: 4.5rem; 
+}
+
 .password-input-container {
   position: relative;
   display: flex; /* Para alinhar o input e o botão */
@@ -63,7 +73,7 @@
   user-select: none;
 }
 
-.login-button {
+.login-submit {
   width: 100%;
   padding: 1rem;
   background-color: #91302C;
