@@ -57,7 +57,7 @@ const Navbar = () => {
         <h1 className="navbar-logo">Temperos</h1>
         <div className="navbar-links-container">
           <a href="/" className="navbar-link">Início</a>
-          <a href="/sobre" className="navbar-link">Sobre</a>
+          <a href="#historia" className="navbar-link">Sobre</a>
           <div className="dropdown-container">
             <span className="navbar-link dropdown-toggle" onClick={toggleDropdown}>
               Serviços <span className="arrow-down">▼</span>
@@ -73,8 +73,7 @@ const Navbar = () => {
                   }
                 }}
               >
-                <a href="/servicos/item1" className="dropdown-item">Serviço 1</a>
-                <a href="/servicos/item2" className="dropdown-item">Serviço 2</a>
+                <a href="/servicos/item1" className="dropdown-item">Produtos</a>
                 {/* Adicione mais itens aqui */}
               </div>
             )}

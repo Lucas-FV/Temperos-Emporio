@@ -14,7 +14,7 @@ const usuarios = [
 const TEMP_DB_CONFIG = {
    host: 'localhost',
    user: 'root',
-   password: 'SQL.2917'
+   password: '1234'
 };
 
 async function initDatabase() {
