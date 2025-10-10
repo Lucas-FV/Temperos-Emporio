@@ -1,0 +1,92 @@
+/* src/pages/AdminPage/AdminPage.css */
+
+.admin-page-container {
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* --- Cabeçalho (Fundo Vermelho/Marrom) --- */
+.admin-header {
+    background-color: #91302c; 
+    color: white;
+    padding: 3rem 5%;
+    margin-bottom: 2rem;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.admin-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-top: 0; 
+    margin-bottom: 0.5rem;
+}
+
+.admin-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* --- Conteúdo Principal e Grade de Cards --- */
+.admin-main {
+    padding: 0 5% 4rem;
+    max-width: 1200px;
+    margin: 0 auto; 
+}
+
+.card-grid {
+    display: flex;
+    gap: 50px; 
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.admin-card {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-align: center;
+    text-decoration: none; 
+    color: inherit;
+    width: calc(50% - 100px);
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.icon-placeholder {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.card-description {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Responsividade básica */
+@media (max-width: 768px) {
+    .admin-card {
+        width: 100%;
+    }
+}

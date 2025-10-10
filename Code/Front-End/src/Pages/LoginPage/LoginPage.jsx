@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import axios from 'axios';
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; 
+import axios from "axios";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useAuth } from '../../contexts/AuthContext'; 
 import "./LoginPage.css";
 
-
 const LoginPage = () => {
+  const auth = useAuth();
+  const login = auth?.login || (() => {});
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,32 +19,44 @@ const LoginPage = () => {
     setError("");
     setLoading(true);
 
-    //Funcao de Login
     const loginPayload = {
       email: email,
-      password: password
+      password: password,
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/login', loginPayload);
-      if (response.data.success){
-         console.log("Login SUCESSO!!");
-         alert(`Bem-Vindo, ${response.data.user.username}!`)
+      const response = await axios.post(
+        "http://localhost:3000/login",
+        loginPayload
+      );
+
+      if (response.data.success) {
+        const userData = response.data.user;
+
+        // 🚨 AÇÃO CRÍTICA: Chama a função login do Contexto.
+        // Esta função SALVA o usuário e REDIRECIONA para /admin.
+        login(userData);
+
+        // Não é necessário alertar ou console.log aqui, o login faz o redirect.
+      } else {
+        // Trata o caso raro de status 200 com sucesso: false
+        setError(
+          response.data.message || "Credenciais inválidas. Tente novamente."
+        );
       }
     } catch (err) {
-      if (err.response && err.response.status === 401){
-         setError(err.response.data.message || 'Credenciais inválidas.');
+      if (err.response && err.response.status === 401) {
+        // Erro de credenciais (401)
+        setError(err.response.data.message || "Credenciais inválidas.");
       } else {
-         setError('Não foi possível conectar ao servidor. Verifique o backend.');
-         console.error("Erro de requisição:", err);
+        // Erro de conexão/servidor
+        setError("Não foi possível conectar ao servidor. Verifique o backend.");
+        console.error("Erro de requisição:", err);
       }
     } finally {
+      // 🚨 Remover o setTimeout antigo, e deixar apenas o estado final
       setLoading(false);
     }
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500);
   };
 
   return (
@@ -71,14 +86,17 @@ const LoginPage = () => {
                 required
                 disabled={loading}
               />
-              <span className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+              <span
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
           </div>
           {error && <p className="login-error">{error}</p>}
           <button type="submit" className="login-submit" disabled={loading}>
-            {loading ? 'Logando...' : 'Log In'}
+            {loading ? "Logando..." : "Log In"}
           </button>
         </form>
       </div>
