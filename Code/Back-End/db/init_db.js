@@ -32,6 +32,18 @@ async function initDatabase() {
     connection = await getConnection();
 
     await connection.execute(`
+    CREATE TABLE IF NOT EXISTS produtos (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      nome VARCHAR(100) NOT NULL,
+      descricao TEXT,
+      preco DECIMAL(10, 2) NOT NULL,
+      peso VARCHAR(50),
+      categoria VARCHAR (50)
+    )
+`);
+console.log('✔ Tabela "produtos" garantida.');
+
+    await connection.execute(`
       CREATE TABLE IF NOT EXISTS usuarios (
          id INT AUTO_INCREMENT PRIMARY KEY,
          username VARCHAR(50) NOT NULL UNIQUE,
