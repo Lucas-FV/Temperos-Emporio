@@ -11,7 +11,7 @@ app.use(cors());
 
 //Importacao dos arquivos de rotas
 const loginRoutes = require('./routes/Login/login');
-const loginRoutes = require('./routes/Produtos/produtos');
+const produtosRoutes = require('./routes/Produtos/produtos');
 
 //Middleware: Inicializa o CORS
 app.use(express.json());

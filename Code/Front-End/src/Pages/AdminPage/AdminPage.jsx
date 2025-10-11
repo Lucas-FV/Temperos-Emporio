@@ -1,8 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext'; 
 import './AdminPage.css';
 
 const AdminPage = () => {
+
+  const { logout } = useAuth(); 
+
   return (
     <div className="admin-page-container">
       
@@ -10,6 +14,9 @@ const AdminPage = () => {
         <div className="header-content">
           <h1 className="admin-title">Administração</h1>
           <p className="admin-subtitle">Gerencie todos os produtos e veja dashboards por aqui !</p>
+          <button className='logout-button' onClick={logout}>
+            Sair (Logout)
+          </button>
         </div>
       </header>
 

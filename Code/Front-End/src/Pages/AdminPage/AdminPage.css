@@ -31,6 +31,18 @@
     opacity: 0.9;
 }
 
+.logout-button{
+    height: 30px;
+    padding: 10px, 20px;
+    background-color: white;
+    color: #91302c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
 /* --- Conteúdo Principal e Grade de Cards --- */
 .admin-main {
     padding: 0 5% 4rem;
