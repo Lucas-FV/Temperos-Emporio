@@ -3,7 +3,7 @@ const router = express.Router();
 const { getConnection } = require('../../db/db');
 
 router.post('/', async (req, res) => {
-   const {nome, descricao, preco, peso, categoria, } = req.body;
+   const { nome, descricao, preco, peso, categoria, prazo_validade } = req.body;
 
    if(!nome || !preco){
       return res.status(400).json({success: false, message: 'Nome e preço são obrigatórios.'});
@@ -15,11 +15,11 @@ router.post('/', async (req, res) => {
       connection = await getConnection();
 
       const query = ` 
-         INSERT INTO produtos (nome, descricao, preco, peso, categoria)
-         VALUES (?, ?, ?, ?, ?)
+         INSERT INTO produtos (nome, descricao, preco, peso, categoria, prazo_validade)
+            VALUES (?, ?, ?, ?, ?, ?)
       `;
 
-      const values = [nome, descricao, preco, peso, categoria];
+      const values = [nome, descricao, preco, peso, categoria, prazo_validade];
 
       const [result] = await connection.execute(query, values);
 
@@ -36,4 +36,4 @@ router.post('/', async (req, res) => {
    }
 });
 
-module.exports = router;
+module.exports = router

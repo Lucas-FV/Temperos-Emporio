@@ -1,0 +1,122 @@
+/* src/pages/ProductRegisterPage/ProductRegisterPage.css */
+
+.register-page-view {
+    /* Garante que o layout de admin (sidebar/header) seja injetado corretamente */
+    min-height: 100vh; 
+    background-color: #f0f2f5;
+}
+
+/* Reutilizando o cabeçalho de administração */
+.admin-header {
+    background-color: #91302c; 
+    color: white;
+    padding: 2rem 5%;
+    margin-bottom: 2rem;
+}
+
+.admin-title {
+    font-size: 2rem;
+    margin-top: 0;
+}
+
+.admin-subtitle {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+.register-main {
+    padding: 0 5% 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.register-card {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.product-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas */
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1; /* Ocupa as duas colunas */
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #444;
+}
+
+.form-group input, 
+.form-group select,
+.form-group textarea {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.submit-button, .cancel-button {
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submit-button {
+    background-color: #91302c;
+    color: white;
+    border: none;
+}
+.submit-button:hover {
+    background-color: #7a2824;
+}
+
+.cancel-button {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+/* Mensagens de Feedback */
+.feedback-message {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+}
+.feedback-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+.feedback-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
