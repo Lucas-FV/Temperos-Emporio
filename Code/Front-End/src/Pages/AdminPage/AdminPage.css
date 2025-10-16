@@ -31,16 +31,25 @@
     opacity: 0.9;
 }
 
-.logout-button{
-    height: 30px;
-    padding: 10px, 20px;
-    background-color: white;
-    color: #91302c;
-    border: none;
-    border-radius: 5px;
+.logout-button {
+    width: 10rem;
+    height: auto;
+    padding: 0.5rem 1rem; /* Padding vertical e horizontal */
+    background-color: transparent; /* Fundo transparente */
+    color: white; /* Texto branco */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Borda branca suave */
+    border-radius: 4px; 
+    margin-top: 0; 
+    font-weight: 600; 
     cursor: pointer;
-    margin-top: 10px;
-    font-weight: bold;
+    transition: background-color 0.2s, border-color 0.2s; 
+    white-space: nowrap;
+}
+
+.logout-button:hover {
+    /* Efeito de hover sutil, igual ao link de retorno */
+    background-color: rgba(255, 255, 255, 0.1); 
+    border-color: white; 
 }
 
 /* --- Conteúdo Principal e Grade de Cards --- */

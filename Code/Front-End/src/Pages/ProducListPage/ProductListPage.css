@@ -6,7 +6,7 @@
     font-family: 'Poppins', sans-serif;
 }
 
-/* Reutilização de Estilos do AdminPage */
+/* --- Reutilização de Estilos do AdminPage --- */
 .admin-header {
     background-color: #91302c; 
     color: white;
@@ -14,16 +14,56 @@
     margin-bottom: 2rem;
 }
 
+/* 🚨 NOVO: Estilos do container flexível para o cabeçalho (título e botão de voltar) */
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column; /* Coloca os filhos verticalmente */
+}
+
+/* 🚨 NOVO: Container que alinha o título e o link de retorno */
+.header-info-and-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px; 
+}
+
+.header-titles {
+    display: flex;
+    flex-direction: column;
+}
+/* Fim dos novos estilos de alinhamento */
+
 .admin-title {
     font-size: 2.5rem;
     font-weight: 700;
     margin-top: 0;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0; /* Ajustado para dar espaço ao subtítulo */
 }
 
 .admin-subtitle {
     font-size: 1.1rem;
     opacity: 0.9;
+    margin-top: 5px; /* Espaço após o título */
+}
+
+/* 🚨 NOVO: Estilo para o link explícito de retorno */
+.back-to-admin-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.back-to-admin-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .product-list-main {
@@ -51,16 +91,16 @@
 }
 
 .search-input {
-    flex-grow: 1; /* Ocupa a maior parte do espaço */
+    flex-grow: 1;
     padding: 0.75rem 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
-    max-width: 400px; /* Limita a largura do campo de busca */
+    max-width: 400px;
 }
 
 .new-product-button {
-    background-color: #91302c; /* Cor principal */
+    background-color: #91302c;
     color: white;
     text-decoration: none;
     padding: 0.8rem 1.5rem;
@@ -90,7 +130,7 @@
     padding: 1rem 1.5rem;
     border-radius: 4px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    border-left: 5px solid #91302c; /* Destaque lateral */
+    border-left: 5px solid #91302c;
 }
 
 .product-name {
@@ -127,4 +167,34 @@
 
 .delete-button:hover {
     background-color: #7a2824;
+}
+
+/* 🚨 NOVO: Estilos para Mensagens de Feedback */
+.feedback-message {
+    padding: 1rem;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.feedback-message.success {
+    background-color: #d4edda; /* Verde Claro */
+    color: #155724; /* Verde Escuro */
+    border: 1px solid #c3e6cb;
+}
+
+.feedback-message.error {
+    background-color: #f8d7da; /* Vermelho Claro */
+    color: #721c24; /* Vermelho Escuro */
+    border: 1px solid #f5c6cb;
+}
+
+.no-results {
+    padding: 20px;
+    text-align: center;
+    color: #666;
+    background-color: white;
+    border-radius: 4px;
+    margin-top: 20px;
 }

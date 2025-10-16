@@ -1,0 +1,210 @@
+/* src/pages/ProductEditPage/ProductEditPage.css */
+
+.edit-page-view {
+    min-height: 100vh; 
+    background-color: #f5f5f5;
+    font-family: 'Poppins', sans-serif;
+    /* Necessário para posicionar elementos fixos */
+    position: relative; 
+}
+
+/* --- Cabeçalho --- */
+.admin-header {
+    background-color: #91302c; 
+    color: white;
+    padding: 2rem 5%;
+    margin-bottom: 3rem;
+}
+
+.admin-title {
+    font-size: 2rem;
+    margin-top: 0;
+}
+
+.admin-subtitle {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* --- Conteúdo Principal --- */
+
+.edit-main {
+    padding: 0 5% 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-details-and-form {
+    display: flex;
+    gap: 40px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Coluna de Detalhes Visuais (Lado Esquerdo) --- */
+
+.visual-details {
+    flex-shrink: 0;
+    width: 400px;
+}
+
+.image-placeholder {
+    background-color: #f0f0f0;
+    height: 350px;
+    width: 100%;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.image-placeholder .icon {
+    font-size: 3rem;
+    color: #ccc;
+}
+
+.detail-info {
+    text-align: left;
+}
+
+.product-name-display {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+    margin: 0 0 5px 0;
+}
+
+.product-price-display {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #91302c;
+    margin: 0 0 5px 0;
+}
+
+.product-peso-display {
+    display: block;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.description-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.product-description-display {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.4;
+}
+
+
+/* --- Coluna do Formulário de Edição --- */
+
+.edit-form-wrapper {
+    flex-grow: 1;
+}
+
+.edit-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #444;
+}
+
+.form-group input, 
+.form-group select,
+.form-group textarea {
+    padding: 0.65rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.save-button, .back-button {
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.save-button {
+    background-color: #007bff; 
+    color: white;
+    border: none;
+}
+
+.back-button {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+
+/* ============================================== */
+/* 🚨 NOTIFICAÇÃO FIXA (Solução Avançada) 🚨       */
+/* ============================================== */
+
+.notification-container {
+    /* 1. Posicionamento Fixo: Retira do fluxo de layout */
+    position: fixed; 
+    top: 120px; /* Distância do topo (ajuste se tiver um header fixo) */
+    left: 50%; /* Centraliza horizontalmente */
+    transform: translateX(-50%); /* Move 50% para a esquerda para o centro perfeito */
+    
+    /* 2. Estilos Visuais */
+    width: auto; /* Adapta-se ao conteúdo */
+    max-width: 90%; 
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-weight: 600;
+    z-index: 2000; /* Garante que fique acima de tudo */
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.notification-container p {
+    margin: 0;
+}
+
+/* Cores de Feedback */
+.notification-container.success {
+    background-color: #d4edda; /* Verde Claro */
+    color: #155724; /* Verde Escuro */
+    border: 1px solid #c3e6cb;
+}
+
+.notification-container.error {
+    background-color: #f8d7da; /* Vermelho Claro */
+    color: #721c24; /* Vermelho Escuro */
+    border: 1px solid #f5c6cb;
+}

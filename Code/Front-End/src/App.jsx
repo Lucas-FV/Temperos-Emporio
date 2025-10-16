@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import AdminPage from "./Pages/AdminPage/AdminPage";
 import ProductListPage from "./Pages/ProducListPage/ProductListPage";
 import ProductRegisterPage from "./Pages/ProductRegisterPage/ProductRegisterPage";
+import ProductEditPage from "./Pages/ProductEditPage/ProductEditPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/produtos" element={<ProductListPage />} />
         <Route path="/admin/produtos/cadastro" element={<ProductRegisterPage />} />
+        <Route path="/admin/produtos/editar/:id" element={<ProductEditPage />} />
       </Route>
 
       {/* Opcional: Rota para páginas não encontradas */}
