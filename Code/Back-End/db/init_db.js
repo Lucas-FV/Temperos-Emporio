@@ -16,7 +16,7 @@ const usuarios = [
 const TEMP_DB_CONFIG = {
   host: "localhost",
   user: "root",
-  password: "1234",
+  password: "SQL.2917",
 };
 
 async function initDatabase() {
@@ -33,16 +33,18 @@ async function initDatabase() {
 
     await connection.execute(`
     CREATE TABLE IF NOT EXISTS produtos (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      nome VARCHAR(100) NOT NULL,
-      descricao TEXT,
-      preco DECIMAL(10, 2) NOT NULL,
-      peso VARCHAR(50),
-      prazo_validade VARCHAR(50),
-      categoria VARCHAR (50)
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nome VARCHAR(100) NOT NULL,
+        descricao TEXT,
+        preco DECIMAL(10, 2) NOT NULL,
+        peso VARCHAR(50),
+        prazo_validade VARCHAR(50),
+        categoria VARCHAR (50),
+        imagem_url VARCHAR(255),
+        data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
 `);
-console.log('✔ Tabela "produtos" garantida.');
+    console.log('✔ Tabela "produtos" garantida.');
 
     await connection.execute(`
       CREATE TABLE IF NOT EXISTS usuarios (

@@ -3,6 +3,9 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import "./ProductEditPage.css";
 
+// URL base para carregar imagens estáticas do backend
+const BASE_URL = "http://localhost:3000/uploads/";
+
 const ProductEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -12,7 +15,7 @@ const ProductEditPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 2. Estados para o formulário e submissão (Dados que o usuário está digitando)
+  // 2. Estados para o formulário e submissão
   const [formData, setFormData] = useState({
     nome: "",
     descricao: "",
@@ -20,35 +23,37 @@ const ProductEditPage = () => {
     peso: "",
     categoria: "",
     prazo_validade: "",
+    imagem_url: "", // Guarda o nome do arquivo existente
   });
+  const [selectedFile, setSelectedFile] = useState(null); // 🚨 NOVO: Para o novo arquivo
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
-  const [isSaving, setIsSaving] = useState(false); // Estado para o botão Salvar
+  const [isSaving, setIsSaving] = useState(false);
 
   // --- LÓGICA DE BUSCA DO PRODUTO (GET) ---
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        // 🚨 Tenta buscar o produto no backend
         const response = await axios.get(
           `http://localhost:3000/produtos/${id}`
         );
 
         if (response.data.success && response.data.produto) {
-          const data = response.data.produto;
+          const data = response.data.produto; // Preenche o estado do produto (para exibição)
 
-          // Preenche o estado do produto (para exibição)
-          setProduct(data);
+          setProduct(data); // Preenche o estado do formulário (para edição)
 
-          // Preenche o estado do formulário (para edição)
           setFormData({
             nome: data.nome || "",
             descricao: data.descricao || "",
-            // Garante que o preço seja tratado como string para o input
             preco: String(data.preco) || "",
             peso: data.peso || "",
             categoria: data.categoria || "",
             prazo_validade: data.prazo_validade || "",
+            imagem_url: data.imagem_url || "",
           });
+          setError(null);
         } else {
           setError("Produto não encontrado.");
         }
@@ -56,17 +61,24 @@ const ProductEditPage = () => {
         console.error("Erro ao buscar produto:", err);
         setError("Erro de conexão ou servidor.");
       } finally {
-        setLoading(false);
+        setLoading(false); // 🚨 DESATIVA O LOADING (PONTO CRÍTICO)
       }
     };
 
-    fetchProduct();
+    fetchProduct(); // O [id] como dependência garante que o fetch seja refeito se o ID na URL mudar
   }, [id]);
 
-  // Manipula a mudança em qualquer campo do formulário
+  // Manipula a mudança em campos de texto
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // 🚨 NOVO HANDLER: Captura o arquivo selecionado
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+    // Limpa a mensagem caso o usuário tente selecionar outro arquivo após um erro
+    setMessage("");
   };
 
   // --- LÓGICA DE SUBMISSÃO DA EDIÇÃO (PUT) ---
@@ -74,26 +86,60 @@ const ProductEditPage = () => {
     e.preventDefault();
     setMessage("");
     setIsError(false);
-    setIsSaving(true); // Inicia o loading
+    setIsSaving(true);
 
-    const payload = {
-      ...formData,
-      // Garante que o preço seja enviado como número (float)
-      preco: parseFloat(formData.preco) || 0,
-    };
+    let submitPayload;
+
+    // Se um novo arquivo foi selecionado, usamos FormData
+    if (selectedFile) {
+      submitPayload = new FormData();
+
+      // 1. Anexa o novo arquivo
+      submitPayload.append("imagem", selectedFile);
+
+      // 2. Anexa todos os campos de texto
+      submitPayload.append("nome", formData.nome);
+      submitPayload.append("descricao", formData.descricao);
+      submitPayload.append("preco", parseFloat(formData.preco) || 0);
+      submitPayload.append("peso", formData.peso);
+      submitPayload.append("categoria", formData.categoria);
+      submitPayload.append("prazo_validade", formData.prazo_validade);
+
+      // O backend precisa estar configurado para lidar com PUT e multipart/form-data,
+      // o que exige mudanças na rota PUT que ainda não fizemos. Por ora, simulamos.
+    } else {
+      // Se NENHUM arquivo novo foi selecionado, enviamos JSON normal
+      submitPayload = {
+        ...formData,
+        preco: parseFloat(formData.preco) || 0,
+      };
+    }
 
     try {
       const response = await axios.put(
         `http://localhost:3000/produtos/${id}`,
-        payload
+        submitPayload,
+        // Configura o cabeçalho apenas se for FormData
+        selectedFile
+          ? { headers: { "Content-Type": "multipart/form-data" } }
+          : {}
       );
 
       if (response.status === 200) {
         setMessage("✅ Produto atualizado com sucesso!");
         setIsError(false);
 
-        // 🚨 CORREÇÃO CRÍTICA: Atualiza o estado 'product' com os NOVOS dados do formulário
-        setProduct(payload);
+        // 🚨 Atualiza a exibição: usa o payload local (se for JSON) ou o novo filename
+        const newImageUrl = selectedFile
+          ? response.data.imagemUrl
+          : formData.imagem_url;
+
+        // Atualiza o estado 'product' com os NOVOS dados
+        setProduct({ ...payload, imagem_url: newImageUrl });
+        setFormData((prev) => ({ ...prev, imagem_url: newImageUrl })); // Mantém a URL no formulário
+
+        // Limpa o input de arquivo
+        setSelectedFile(null);
 
         // Opcional: Redirecionar para a lista após a edição
         setTimeout(() => {
@@ -101,14 +147,14 @@ const ProductEditPage = () => {
         }, 2000);
       }
     } catch (error) {
-      console.error("Erro na edição:", error);
+      // ... (restante do catch) ...
       const msg =
         error.response?.data?.message ||
         "Erro ao conectar com o servidor. Verifique os dados.";
       setMessage(`❌ ${msg}`);
       setIsError(true);
     } finally {
-      setIsSaving(false); // Desativa o loading
+      setIsSaving(false);
     }
   };
 
@@ -116,18 +162,15 @@ const ProductEditPage = () => {
   if (loading) {
     return <div className="loading-message">Carregando produto...</div>;
   }
-
   if (error) {
     return <div className="error-message">{error}</div>;
   }
-
   if (!product) {
     return (
       <div className="error-message">Produto não existe ou foi removido.</div>
     );
   }
 
-  // --- RENDERIZAÇÃO DA PÁGINA ---
   return (
     <div className="edit-page-view">
       <header className="admin-header">
@@ -138,7 +181,6 @@ const ProductEditPage = () => {
       </header>
 
       <main className="edit-main">
-        {/* 🚨 ÚNICA MENSAGEM: A notificação fixa (que estilizamos no CSS) */}
         {message && (
           <div
             className={`notification-container ${
@@ -150,12 +192,18 @@ const ProductEditPage = () => {
         )}
 
         <div className="product-details-and-form">
-          {/* 🚨 REMOÇÃO DE BLOCO DUPLICADO: O bloco de <p className="feedback-message"> não existe mais aqui */}
-
           {/* Coluna de Detalhes Visuais (Lê do estado 'product' - Exibição Salva) */}
           <div className="visual-details">
             <div className="image-placeholder">
-              <span className="icon">🖼️</span>
+              {product.imagem_url ? (
+                <img
+                  src={`${BASE_URL}${product.imagem_url}`}
+                  alt={product.nome}
+                  className="product-image-display"
+                />
+              ) : (
+                <span className="icon">🖼️</span>
+              )}
             </div>
             <div className="detail-info">
               <h2 className="product-name-display">{product.nome}</h2>
@@ -169,8 +217,33 @@ const ProductEditPage = () => {
           {/* Coluna do Formulário de Edição */}
           <div className="edit-form-wrapper">
             <form onSubmit={handleSubmit} className="edit-form">
+              {/* 7. CAMPO DE UPLOAD PARA SUBSTITUIÇÃO (NOVO) */}
+              <div className="form-group full-width">
+                <label htmlFor="nova_imagem">
+                  Substituir Imagem (Opcional)
+                </label>
+                <input
+                  type="file"
+                  id="nova_imagem"
+                  name="nova_imagem"
+                  onChange={handleFileChange}
+                  accept="image/*"
+                  disabled={isSaving}
+                />
+                {selectedFile && (
+                  <p
+                    style={{
+                      fontSize: "0.85rem",
+                      color: "#666",
+                      marginTop: "5px",
+                    }}
+                  >
+                    Novo arquivo: {selectedFile.name}
+                  </p>
+                )}
+              </div>
+
               {/* 1. Campo NOME */}
-              {/* ... (todos os campos aqui) ... */}
               <div className="form-group full-width">
                 <label htmlFor="nome">Nome do Produto</label>
                 <input
@@ -183,6 +256,7 @@ const ProductEditPage = () => {
                   disabled={isSaving}
                 />
               </div>
+              {/* ... (2-6. Outros Campos: Preço, Peso, Categoria, Validade, Descrição - MANTIDOS) ... */}
 
               {/* 2. Campo PREÇO */}
               <div className="form-group">

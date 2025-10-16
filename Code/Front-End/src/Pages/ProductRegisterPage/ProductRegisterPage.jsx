@@ -16,11 +16,16 @@ const ProductRegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   // Manipula a mudança em qualquer campo do formulário
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
@@ -29,27 +34,49 @@ const ProductRegisterPage = () => {
     setIsError(false);
     setLoading(true);
 
-    // Converte o preço para um número, se necessário
-    const payload = {
-      ...formData,
-      preco: parseFloat(formData.preco) || 0,
-    };
+    // 🚨 1. Cria o objeto FormData para enviar texto e arquivo
+    const formPayload = new FormData();
+
+    // Anexa os campos de texto:
+    formPayload.append("nome", formData.nome);
+    formPayload.append("descricao", formData.descricao);
+    // Garante que o preço seja enviado como string ou número (FormData trata)
+    formPayload.append("preco", parseFloat(formData.preco) || 0);
+    formPayload.append("peso", formData.peso);
+    formPayload.append("categoria", formData.categoria);
+    formPayload.append("prazo_validade", formData.prazo_validade);
+
+    // 2. Anexa o arquivo (Campo 'imagem' deve bater com o Multer)
+    if (selectedFile) {
+      formPayload.append("imagem", selectedFile);
+    }
 
     try {
       const response = await axios.post(
         "http://localhost:3000/produtos",
-        payload
+        formPayload, // 🚨 ENVIA O FORM DATA
+        {
+          // 🚨 Cabeçalho para informar o servidor sobre o tipo de dado
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
 
       if (response.status === 201) {
         setMessage("✅ Produto cadastrado com sucesso!");
+        setIsError(false);
+
+        // 3. Limpa o formulário e o estado do arquivo após o sucesso
         setFormData({
           nome: "",
           descricao: "",
           preco: "",
           peso: "",
           categoria: "",
-        }); // Limpa o formulário
+          prazo_validade: "",
+        });
+        setSelectedFile(null); // Limpa o estado do arquivo
 
         // Opcional: Redirecionar após um breve sucesso
         setTimeout(() => {
@@ -58,6 +85,7 @@ const ProductRegisterPage = () => {
       }
     } catch (error) {
       console.error("Erro no cadastro:", error);
+      // Trata erros de validação do backend ou de servidor
       const msg =
         error.response?.data?.message ||
         "Erro ao conectar com o servidor. Verifique os dados.";
@@ -169,6 +197,27 @@ const ProductRegisterPage = () => {
                 value={formData.descricao}
                 onChange={handleChange}
               ></textarea>
+            </div>
+            <div className="form-group full-width">
+              <label htmlFor="imagem">Imagem do Produto</label>
+              <input
+                type="file"
+                id="imagem"
+                name="imagem" // Deve ser 'imagem' para Multer
+                onChange={handleFileChange}
+                accept="image/*" // Permite apenas arquivos de imagem
+              />
+              {selectedFile && (
+                <p
+                  style={{
+                    fontSize: "0.85rem",
+                    color: "#666",
+                    marginTop: "5px",
+                  }}
+                >
+                  Arquivo selecionado: {selectedFile.name}
+                </p>
+              )}
             </div>
 
             <div className="form-actions">

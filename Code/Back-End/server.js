@@ -12,9 +12,12 @@ app.use(cors());
 //Importacao dos arquivos de rotas
 const loginRoutes = require('./routes/Login/login');
 const produtosRoutes = require('./routes/Produtos/produtos');
+const path = require('path');
 
 //Middleware: Inicializa o CORS
 app.use(express.json());
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 //ROTA PRINCIPAL DE TESTE
 app.get('/', (req, res) => {
