@@ -54,7 +54,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-left">
-        <h1 className="navbar-logo">Temperos</h1>
+        <h1 className="navbar-logo">Temperos Empório Gourmet</h1>
         <div className="navbar-links-container">
           <a href="/" className="navbar-link">Início</a>
           <a href="#historia" className="navbar-link">Sobre</a>

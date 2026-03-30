@@ -1,7 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&display=swap');
 
-
-html{
+html {
   scroll-behavior: smooth;
 }
 
@@ -12,333 +11,372 @@ html{
   font-family: 'Poppins', sans-serif; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #fafafa; /* Um fundo off-white, mais sofisticado que o branco puro */
 }
 
 /* ------------------------------------------------------------------ */
-/* SEÇÃO 1: HERO SECTION (Fundo Marrom-Escuro) */
+/* SEÇÃO 1: HERO SECTION (Inspirado na Dengo - Mais imersivo) */
 /* ------------------------------------------------------------------ */
 
 .principal-section {
-  min-height: 80vh;
-  background-color: #91302c;
+  min-height: 85vh;
+  /* 🚨 DICA: Troque a URL abaixo por uma foto bem bonita de temperos ou da loja no Cloudinary */
+  background: linear-gradient(to right, rgba(145, 48, 44, 0.95), rgba(145, 48, 44, 0.4)), url('https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
   display: flex;
   align-items: center;
-  padding: 4rem 2rem;
+  padding: 4rem 8%; /* Espaçamento mais fluido nas laterais */
   color: white;
 }
 
 .principal-content {
-  max-width: 650px;
+  max-width: 600px;
 }
 
 .principal-section .title {
   margin-top: 0;
-  margin-bottom: 1rem;
-  font-size: 3rem;
-  font-weight: bold;
+  margin-bottom: 1.5rem;
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -1px; /* Deixa o título mais elegante */
 }
 
 .principal-section .subtitle {
-  font-size: 1.5rem;
-  line-height: 1.5;
-  margin-bottom: 2rem;
+  font-size: 1.25rem;
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  opacity: 0.9;
 }
 
 .button-group {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .cta-button {
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
+  padding: 1rem 2rem;
+  border-radius: 30px; /* Estilo pílula, bem moderno */
   font-size: 1rem;
+  font-weight: 500;
   cursor: pointer;
-  border: 2px solid black;
-  background-color: white;
-  color: black;
-  font-weight: bold;
   text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-.cta-button:hover {
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.6);
+.cta-button.produtos {
+  background-color: white;
+  color: #91302c;
+  border: none;
+}
+
+.cta-button.produtos:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.cta-button.historia {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+}
+
+.cta-button.historia:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* ------------------------------------------------------------------ */
-/* SEÇÃO 2: PRODUTOS (Fundo Branco/Claro) */
+/* SEÇÃO 2: PRODUTOS (Design mais limpo e leve) */
 /* ------------------------------------------------------------------ */
 
 .products-section {
-  min-height: 700px;
-  background-color: white;
-  padding: 6rem 2rem;
+  padding: 6rem 8%;
+  background-color: #fafafa;
+}
+
+.header-content {
   text-align: center;
+  margin-bottom: 4rem;
 }
 
 .section-title {
   font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  font-weight: 700;
   color: #333;
+  margin-bottom: 1rem;
 }
 
 .section-description {
   font-size: 1.1rem;
-  margin-bottom: 3rem;
-  color: #555;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+  font-weight: 300;
 }
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2.5rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .product-card {
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.25);
+  background-color: white;
+  border-radius: 16px;
+  overflow: hidden; /* Garante que a imagem não vaze nas bordas arredondadas */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0,0,0,0.02); /* Borda super sutil ao invés de cinza forte */
 }
 
-.product-card:hover{
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(145, 48, 44, 0.1); /* Sombra elegante usando a cor da marca */
 }
 
 .product-image-placeholder {
   width: 100%;
-  height: 180px;
-  background-color: #ccc;
-  border-radius: 4px;   
-  margin-bottom: 1rem;
+  height: 220px;
+  background-color: #f0f0f0;
 }
 
-.product-name{
-  font-family: 'Poppins', sans-serif; 
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-weight: 500;
-  font-size: 20px;
+.product-info {
+  padding: 1.5rem;
   text-align: left;
+}
+
+.product-name {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #333;
+  margin: 0 0 0.5rem 0;
 }
 
 .product-price {
-  font-family: 'Poppins', sans-serif; 
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: left;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #91302c;
-  margin: 0.5rem, 0 0.5rem 0;
+  margin: 0 0 1.5rem 0;
 }
 
 .product-button {
-  background-color: #91302c;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  background-color: transparent;
+  color: #91302c;
+  border: 1px solid #91302c;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
   cursor: pointer;
   width: 100%;
-  font-family: 'Poppins', sans-serif; 
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.product-button:hover {
+  background-color: #91302c;
+  color: white;
 }
 
 .view-all-container {
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 4rem;
 }
 
 .view-all-button {
-  color: white;
-  background-color: #91302c;
-  border: none;
-  padding: 1rem 2.5rem;
-  font-size: 1.1rem;
+  color: #333;
+  background-color: transparent;
+  border: 1px solid #333;
+  padding: 1rem 3rem;
+  font-size: 1rem;
+  font-weight: 500;
   border-radius: 30px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+}
+
+.view-all-button:hover {
+  background-color: #333;
+  color: white;
 }
 
 /* ------------------------------------------------------------------ */
-/* SEÇÃO 3: NOSSA HISTÓRIA (Fundo Marrom-Escuro) */
+/* SEÇÃO 3: NOSSA HISTÓRIA */
 /* ------------------------------------------------------------------ */
 
 .history-section {
-    background-color: #91302c; 
-    min-height: 500px;
-    padding: 6rem 8%; 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 4rem;
-    color: white;
+  background-color: #91302c; 
+  padding: 6rem 8%; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5rem;
+  color: white;
 }
 
 .history-content {
-    flex: 1;
-    max-width: 55%; 
+  flex: 1;
+  max-width: 500px; 
 }
 
 .history-title {
-    font-size: 3rem;
-    font-weight: bold;
-    margin-top: 0;
-    margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 2rem;
 }
 
 .history-content p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 300;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  opacity: 0.95;
 }
 
 .history-image-container {
-    flex: 1;
-    max-width: 550px; 
+  flex: 1;
 }
 
 .history-placeholder {
-    width: 100%;
-    height: 400px; 
-    background-color: #e0e0e0; 
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.1); 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 450px; 
+  background-color: rgba(255, 255, 255, 0.1); 
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 /* ------------------------------------------------------------------ */
-/* SEÇÃO 4: VISITE NOSSA LOJA (Fundo Branco/Claro) */
+/* SEÇÃO 4: VISITE NOSSA LOJA & MAPA */
 /* ------------------------------------------------------------------ */
 
 .store-section {
-    background-color: white; 
-    padding: 6rem 8%;
-    text-align: center;
+  background-color: white; 
+  padding: 6rem 8%;
+}
+
+.store-header {
+  text-align: center;
+  margin-bottom: 4rem;
 }
 
 .store-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 3rem;
-    color: #333;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.store-subtitle {
+  color: #666;
+  font-weight: 300;
+  font-size: 1.1rem;
 }
 
 .store-content-grid {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; 
-    gap: 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: stretch; /* Faz os dois lados ficarem com alturas parecidas */
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .contact-card {
-    background-color: #91302c; 
-    color: white;
-    padding: 2.5rem;
-    border-radius: 10px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); 
-    max-width: 450px;
-    flex-shrink: 0; 
-    text-align: left;
+  background-color: #91302c; 
+  color: white;
+  padding: 3rem;
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(145, 48, 44, 0.15); 
+  flex: 1;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .contact-item {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-    line-height: 1.4;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.8rem;
+  font-size: 1.05rem;
+  font-weight: 300;
+  line-height: 1.5;
 }
 
-.icon-placeholder {
-    font-size: 1.5rem;
-    margin-right: 1rem;
-    width: 30px; 
-    text-align: center;
-}
+.contact-item p { margin: 0; }
 
-.contact-item p {
-    margin: 0;
-}
-
-/* Estilos para Redes Sociais */
-.social-links {
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
-    padding-top: 1.5rem;
-    margin-top: 1.5rem;
-}
-
-.social-links p {
-    font-weight: bold;
-    margin-bottom: 0.8rem;
-}
-
-.social-icons .icon-placeholder {
-    font-size: 2rem;
-    cursor: pointer;
-    margin-right: 1.5rem;
-    width: auto; 
-}
-
-.map-placeholder-container {
-    flex-grow: 1;
-    max-width: 600px;
-}
-
-.map-placeholder {
-    width: 100%;
-    height: 405px; 
-    background-color: #e0e0e0; 
-    border-radius: 10px;
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.5);
-}
-
-.contact-card .icons{
+.contact-card .icons {
   color: white;
   width: 24px;
   height: 24px;
-  margin-right: 1rem;
+  margin-right: 1.2rem;
   flex-shrink: 0;
+  opacity: 0.8;
 }
 
+/* Redes Sociais */
 .social-links {
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
-    padding-top: 1.5rem;
-    margin-top: 1.5rem;
-    text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 2rem;
+  margin-top: 1rem;
+  text-align: left;
 }
 
 .social-links p {
-    font-weight: bold;
-    margin-bottom: 1rem; /* Aumenta o espaço entre o texto e os ícones */
-    /* Garante que o texto tenha a cor branca do card */
-    color: white; 
+  font-weight: 500;
+  margin-bottom: 1.2rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
 }
 
 .social-icons {
-    display: flex;
-    justify-content: center; 
-    gap: 1.5rem; 
+  display: flex;
+  gap: 1.5rem; 
 }
 
 .social-icons svg {
-    width: 30px; 
-    height: 30px;
-    color: white; 
-    transition: color 0.3s ease; 
+  width: 26px; 
+  height: 26px;
+  color: white; 
+  transition: transform 0.3s ease, opacity 0.3s ease; 
 }
 
 .social-icons svg:hover {
-    color: #e0e0e0;
-    cursor: pointer;
+  transform: translateY(-3px);
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+/* 🚨 IMAGEM DO MAPA CLOUDINARY */
+.map-placeholder-container {
+  flex: 1.5; /* Faz a imagem ocupar um pouco mais de espaço que o card */
+  display: flex;
+  align-items: center;
+}
+
+.map-image-display {
+  width: 100%;
+  height: 100%;
+  max-height: 550px;
+  object-fit: contain; 
+  background-color: #f7f6f1; 
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.map-placeholder-container a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.map-image-display:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
