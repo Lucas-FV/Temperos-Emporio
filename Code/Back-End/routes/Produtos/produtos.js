@@ -1,214 +1,132 @@
 const express = require("express");
 const router = express.Router();
-const { getConnection } = require("../../db/db");
-// Certifique-se de que o upload está sendo importado corretamente
-const upload = require("../../middleware/upload");
-const fs = require("fs"); // Módulo nativo para deletar arquivos (usado no POST)
+const upload = require("../../middleware/upload"); // Nosso middleware agora com Cloudinary
+const Produto = require("../../models/Produto"); // Model do MongoDB
 
-// Rota DELETE
+// ==========================================
+// Rota DELETE (Remover Produto)
+// ==========================================
 router.delete("/:id", async (req, res) => {
-  const { id } = req.params;
-
-  let connection;
   try {
-    connection = await getConnection();
+    const produto = await Produto.findByIdAndDelete(req.params.id);
 
-    const query = `DELETE FROM produtos WHERE id = ?`;
-
-    const [result] = await connection.execute(query, [id]);
-
-    if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: "Produto não encontrado para exclusão.",
-        });
+    if (!produto) {
+      return res.status(404).json({ success: false, message: "Produto não encontrado para exclusão." });
     }
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Produto deletado com sucesso!",
-        produtoId: id,
-      });
+    res.status(200).json({ success: true, message: "Produto deletado com sucesso!", produtoId: req.params.id });
   } catch (error) {
-    console.error(`Erro ao deletar produto ${id}:`, error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Erro interno do servidor ao deletar produto.",
-      });
-  } finally {
-    if (connection) await connection.end();
+    console.error(`Erro ao deletar produto ${req.params.id}:`, error);
+    res.status(500).json({ success: false, message: "ID inválido ou erro interno do servidor." });
   }
 });
 
-// Rota PUT (Atualizar)
+// ==========================================
+// Rota PUT (Atualizar Produto)
+// ==========================================
 router.put("/:id", async (req, res) => {
-  const { id } = req.params;
-  // Recebe todos os campos
-  const { nome, descricao, preco, peso, categoria, prazo_validade } = req.body;
+  const { nome, preco } = req.body;
 
   if (!nome || !preco) {
-    return res
-      .status(400)
-      .json({ success: false, message: "Nome e preço são obrigatórios." });
+    return res.status(400).json({ success: false, message: "Nome e preço são obrigatórios." });
   }
 
-  let connection;
   try {
-    connection = await getConnection();
+    const produtoAtualizado = await Produto.findByIdAndUpdate(req.params.id, req.body, { new: true });
 
-    // Query SQL de Atualização - Limpa
-    const query = `
-            UPDATE produtos 
-            SET nome = ?, descricao = ?, preco = ?, peso = ?, categoria = ?, prazo_validade = ?
-            WHERE id = ?
-        `;
-
-    const values = [
-      nome,
-      descricao,
-      preco,
-      peso,
-      categoria,
-      prazo_validade,
-      id,
-    ];
-    const [result] = await connection.execute(query, values);
-
-    if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          message: "Produto não encontrado para atualização.",
-        });
+    if (!produtoAtualizado) {
+      return res.status(404).json({ success: false, message: "Produto não encontrado para atualização." });
     }
 
-    res
-      .status(200)
-      .json({ success: true, message: "Produto atualizado com sucesso!" });
+    res.status(200).json({ success: true, message: "Produto atualizado com sucesso!" });
   } catch (error) {
-    console.error(`Erro ao atualizar produto ${id}:`, error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Erro interno do servidor ao atualizar produto.",
-      });
-  } finally {
-    if (connection) await connection.end();
+    console.error(`Erro ao atualizar produto ${req.params.id}:`, error);
+    res.status(500).json({ success: false, message: "ID inválido ou erro interno do servidor." });
   }
 });
 
-// 🚨 ROTA GET /:id (CORRIGIDA)
+// ==========================================
+// ROTA GET /:id (Buscar um produto específico)
+// ==========================================
 router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  let connection;
   try {
-    connection = await getConnection();
+    const produto = await Produto.findById(req.params.id);
 
-    // Query SQL para buscar o produto pelo ID - LIMPA EM UMA LINHA
-    const query =
-      "SELECT id, nome, descricao, preco, peso, categoria, prazo_validade, imagem_url FROM produtos WHERE id = ?";
-
-    const [rows] = await connection.execute(query, [id]);
-
-    if (rows.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Produto não encontrado." });
+    if (!produto) {
+      return res.status(404).json({ success: false, message: "Produto não encontrado." });
     }
 
-    res.status(200).json({ success: true, produto: rows[0] });
+    // Convertendo para objeto puro e criando a propriedade 'id' para o Front-End não quebrar
+    const produtoFormatado = produto.toObject();
+    produtoFormatado.id = produtoFormatado._id;
+
+    res.status(200).json({ success: true, produto: produtoFormatado });
   } catch (error) {
-    console.error(`Erro ao buscar produto ${id}:`, error);
-    res
-      .status(500)
-      .json({ success: false, message: "Erro interno do servidor." });
-  } finally {
-    if (connection) await connection.end();
+    console.error(`Erro ao buscar produto ${req.params.id}:`, error);
+    res.status(500).json({ success: false, message: "ID inválido ou erro interno do servidor." });
   }
 });
 
-// Rota GET / (Listar todos)
+// ==========================================
+// Rota GET / (Listar todos os produtos)
+// ==========================================
 router.get("/", async (req, res) => {
-  let connection;
   try {
-    connection = await getConnection();
+    // Adicionamos o 'imagem_url' no select para que a imagem apareça na listagem do Front-End!
+    const produtos = await Produto.find()
+      .select('nome preco peso categoria imagem_url') 
+      .sort({ nome: 1 });
 
-    // Query SQL para listar produtos - Limpa
-    const query =
-      "SELECT id, nome, preco, peso, categoria FROM produtos ORDER BY nome ASC";
+    const produtosFormatados = produtos.map(p => ({
+      id: p._id,
+      nome: p.nome,
+      preco: p.preco,
+      peso: p.peso,
+      categoria: p.categoria,
+      imagem_url: p.imagem_url // Repassando a URL da imagem para o frontend
+    }));
 
-    const [rows] = await connection.execute(query);
-
-    res.status(200).json({ success: true, produtos: rows });
+    res.status(200).json({ success: true, produtos: produtosFormatados });
   } catch (error) {
     console.error("Erro ao listar produtos:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Erro interno do servidor ao listar produtos.",
-      });
-  } finally {
-    if (connection) await connection.end();
+    res.status(500).json({ success: false, message: "Erro interno do servidor ao listar produtos." });
   }
 });
 
-// Rota POST (Cadastrar)
+// ==========================================
+// Rota POST (Cadastrar Novo Produto)
+// ==========================================
 router.post("/", upload.single("imagem"), async (req, res) => {
   const { nome, descricao, preco, peso, categoria, prazo_validade } = req.body;
-  const imagemPath = req.file ? req.file.filename : null;
+  
+  // 🚨 AQUI ESTÁ A MÁGICA DO CLOUDINARY:
+  // req.file.path agora contém a URL completa da imagem hospedada na nuvem!
+  const imagemPath = req.file ? req.file.path : null;
 
   if (!nome || !preco) {
-    if (req.file) {
-      fs.unlinkSync(req.file.path);
-    }
-    return res
-      .status(400)
-      .json({ success: false, message: "Nome e preço são obrigatórios." });
+    return res.status(400).json({ success: false, message: "Nome e preço são obrigatórios." });
   }
 
-  let connection;
   try {
-    connection = await getConnection();
-
-    // Query SQL de Inserção - Limpa
-    const query = `
-            INSERT INTO produtos (nome, descricao, preco, peso, categoria, prazo_validade, imagem_url)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        `;
-    const values = [
+    const novoProduto = await Produto.create({
       nome,
       descricao,
       preco,
       peso,
       categoria,
       prazo_validade,
-      imagemPath,
-    ];
-
-    const [result] = await connection.execute(query, values);
+      imagem_url: imagemPath // Salvando o link direto no MongoDB
+    });
 
     res.status(201).json({
       success: true,
       message: "Produto cadastrado com sucesso!",
-      produtoId: result.insertId,
+      produtoId: novoProduto._id, 
       imagemUrl: imagemPath,
     });
   } catch (error) {
     console.error("Erro ao cadastrar produto:", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Erro interno do servidor." });
-  } finally {
-    if (connection) await connection.end();
+    res.status(500).json({ success: false, message: "Erro interno do servidor." });
   }
 });
 

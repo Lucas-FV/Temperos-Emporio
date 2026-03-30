@@ -1,45 +1,45 @@
+// backend/routes/login.js (ou o caminho correto da sua rota de login)
 const express = require("express");
-const { getConnection } = require("../../db/db");
 const router = express.Router();
-const bcrypt = require("bcrypt"); // 👈 Importa o bcrypt
+const bcrypt = require("bcrypt");
+const Usuario = require("../../models/Usuario"); // 👈 Importa o modelo do Mongoose
 
 // Rota POST para login
 router.post("/", async (req, res) => {
   const { email, password } = req.body;
 
+  // Validação básica
   if (!email || !password) {
     return res
       .status(400)
       .json({ success: false, message: "Email e senha são obrigatórios." });
   }
 
-  let connection;
   try {
-    connection = await getConnection();
+    // 1. Busca o usuário no MongoDB pelo email
+    // O findOne retorna exatamente 1 documento (ou null se não achar)
+    const user = await Usuario.findOne({ email: email });
 
-    // Consulta SQL (continua a mesma)
-    const [rows] = await connection.execute(
-      "SELECT username, password_hash, email, cargo FROM usuarios WHERE email = ?",
-      [email]
-    );
-
-    if (rows.length === 0) {
-      // Usamos a mesma mensagem de erro para que o atacante não saiba se o erro foi no email ou na senha
+    // 2. Se o usuário não existir
+    if (!user) {
       return res
         .status(401)
         .json({ success: false, message: "Email ou senha inválidos." });
     }
 
-    const user = rows[0];
-
-    // 🚨 MUDANÇA CRÍTICA: Compara a senha com o hash no banco
+    // 3. Compara a senha digitada com o hash salvo no banco
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
 
     if (isPasswordValid) {
+      // 4. Sucesso! Retorna os dados do usuário
       return res.json({
         success: true,
         message: "Login realizado com sucesso!!",
-        user: { username: user.username, email: user.email, cargo: user.cargo },
+        user: { 
+            username: user.username, 
+            email: user.email, 
+            cargo: user.cargo 
+        },
       });
     } else {
       // Senha inválida
@@ -47,16 +47,14 @@ router.post("/", async (req, res) => {
         .status(401)
         .json({ success: false, message: "Email ou senha inválidos." });
     }
+
   } catch (error) {
     console.error("Erro de Servidor/DB: ", error);
     return res
       .status(500)
       .json({ success: false, message: "Erro interno do servidor." });
-  } finally {
-    if (connection) {
-      await connection.end();
-    }
   }
+  // Removemos o bloco 'finally' pois o Mongoose gerencia a conexão globalmente!
 });
 
 module.exports = router;

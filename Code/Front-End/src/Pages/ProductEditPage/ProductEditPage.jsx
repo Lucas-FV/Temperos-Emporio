@@ -3,9 +3,6 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import "./ProductEditPage.css";
 
-// URL base para carregar imagens estáticas do backend
-const BASE_URL = "http://localhost:3000/uploads/";
-
 const ProductEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -23,9 +20,9 @@ const ProductEditPage = () => {
     peso: "",
     categoria: "",
     prazo_validade: "",
-    imagem_url: "", // Guarda o nome do arquivo existente
+    imagem_url: "", // Guarda a URL da nuvem existente
   });
-  const [selectedFile, setSelectedFile] = useState(null); // 🚨 NOVO: Para o novo arquivo
+  const [selectedFile, setSelectedFile] = useState(null); // Para o novo arquivo
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -34,15 +31,14 @@ const ProductEditPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        // 🚨 Tenta buscar o produto no backend
         const response = await axios.get(
           `http://localhost:3000/produtos/${id}`
         );
 
         if (response.data.success && response.data.produto) {
-          const data = response.data.produto; // Preenche o estado do produto (para exibição)
+          const data = response.data.produto; 
 
-          setProduct(data); // Preenche o estado do formulário (para edição)
+          setProduct(data); 
 
           setFormData({
             nome: data.nome || "",
@@ -61,11 +57,11 @@ const ProductEditPage = () => {
         console.error("Erro ao buscar produto:", err);
         setError("Erro de conexão ou servidor.");
       } finally {
-        setLoading(false); // 🚨 DESATIVA O LOADING (PONTO CRÍTICO)
+        setLoading(false); 
       }
     };
 
-    fetchProduct(); // O [id] como dependência garante que o fetch seja refeito se o ID na URL mudar
+    fetchProduct(); 
   }, [id]);
 
   // Manipula a mudança em campos de texto
@@ -74,10 +70,9 @@ const ProductEditPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // 🚨 NOVO HANDLER: Captura o arquivo selecionado
+  // Captura o arquivo selecionado
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
-    // Limpa a mensagem caso o usuário tente selecionar outro arquivo após um erro
     setMessage("");
   };
 
@@ -89,24 +84,22 @@ const ProductEditPage = () => {
     setIsSaving(true);
 
     let submitPayload;
+    let config = {};
 
     // Se um novo arquivo foi selecionado, usamos FormData
     if (selectedFile) {
       submitPayload = new FormData();
 
-      // 1. Anexa o novo arquivo
       submitPayload.append("imagem", selectedFile);
-
-      // 2. Anexa todos os campos de texto
       submitPayload.append("nome", formData.nome);
       submitPayload.append("descricao", formData.descricao);
       submitPayload.append("preco", parseFloat(formData.preco) || 0);
       submitPayload.append("peso", formData.peso);
       submitPayload.append("categoria", formData.categoria);
       submitPayload.append("prazo_validade", formData.prazo_validade);
+      
+      config = { headers: { "Content-Type": "multipart/form-data" } };
 
-      // O backend precisa estar configurado para lidar com PUT e multipart/form-data,
-      // o que exige mudanças na rota PUT que ainda não fizemos. Por ora, simulamos.
     } else {
       // Se NENHUM arquivo novo foi selecionado, enviamos JSON normal
       submitPayload = {
@@ -119,38 +112,31 @@ const ProductEditPage = () => {
       const response = await axios.put(
         `http://localhost:3000/produtos/${id}`,
         submitPayload,
-        // Configura o cabeçalho apenas se for FormData
-        selectedFile
-          ? { headers: { "Content-Type": "multipart/form-data" } }
-          : {}
+        config
       );
 
       if (response.status === 200) {
         setMessage("✅ Produto atualizado com sucesso!");
         setIsError(false);
 
-        // 🚨 Atualiza a exibição: usa o payload local (se for JSON) ou o novo filename
-        const newImageUrl = selectedFile
+        // Atualiza a exibição: usa o novo link da nuvem se houver, ou mantém o antigo
+        const newImageUrl = selectedFile && response.data.imagemUrl
           ? response.data.imagemUrl
           : formData.imagem_url;
 
-        // Atualiza o estado 'product' com os NOVOS dados
-        setProduct({ ...payload, imagem_url: newImageUrl });
-        setFormData((prev) => ({ ...prev, imagem_url: newImageUrl })); // Mantém a URL no formulário
+        // Atualiza o estado visual e os dados do formulário
+        setProduct((prev) => ({ ...prev, ...formData, imagem_url: newImageUrl }));
+        setFormData((prev) => ({ ...prev, imagem_url: newImageUrl }));
 
         // Limpa o input de arquivo
         setSelectedFile(null);
 
-        // Opcional: Redirecionar para a lista após a edição
         setTimeout(() => {
           navigate("/admin/produtos");
         }, 2000);
       }
     } catch (error) {
-      // ... (restante do catch) ...
-      const msg =
-        error.response?.data?.message ||
-        "Erro ao conectar com o servidor. Verifique os dados.";
+      const msg = error.response?.data?.message || "Erro ao conectar com o servidor. Verifique os dados.";
       setMessage(`❌ ${msg}`);
       setIsError(true);
     } finally {
@@ -159,17 +145,9 @@ const ProductEditPage = () => {
   };
 
   // --- RENDERIZAÇÃO DE ESTADOS ---
-  if (loading) {
-    return <div className="loading-message">Carregando produto...</div>;
-  }
-  if (error) {
-    return <div className="error-message">{error}</div>;
-  }
-  if (!product) {
-    return (
-      <div className="error-message">Produto não existe ou foi removido.</div>
-    );
-  }
+  if (loading) return <div className="loading-message">Carregando produto...</div>;
+  if (error) return <div className="error-message">{error}</div>;
+  if (!product) return <div className="error-message">Produto não existe ou foi removido.</div>;
 
   return (
     <div className="edit-page-view">
@@ -182,22 +160,19 @@ const ProductEditPage = () => {
 
       <main className="edit-main">
         {message && (
-          <div
-            className={`notification-container ${
-              isError ? "error" : "success"
-            }`}
-          >
+          <div className={`notification-container ${isError ? "error" : "success"}`}>
             <p>{message}</p>
           </div>
         )}
 
         <div className="product-details-and-form">
-          {/* Coluna de Detalhes Visuais (Lê do estado 'product' - Exibição Salva) */}
+          {/* Coluna de Detalhes Visuais */}
           <div className="visual-details">
             <div className="image-placeholder">
+              {/* 🚨 A MÁGICA ACONTECE AQUI: Chamamos a URL diretamente! */}
               {product.imagem_url ? (
                 <img
-                  src={`${BASE_URL}${product.imagem_url}`}
+                  src={product.imagem_url}
                   alt={product.nome}
                   className="product-image-display"
                 />
@@ -217,11 +192,9 @@ const ProductEditPage = () => {
           {/* Coluna do Formulário de Edição */}
           <div className="edit-form-wrapper">
             <form onSubmit={handleSubmit} className="edit-form">
-              {/* 7. CAMPO DE UPLOAD PARA SUBSTITUIÇÃO (NOVO) */}
+              {/* CAMPO DE UPLOAD PARA SUBSTITUIÇÃO */}
               <div className="form-group full-width">
-                <label htmlFor="nova_imagem">
-                  Substituir Imagem (Opcional)
-                </label>
+                <label htmlFor="nova_imagem">Substituir Imagem (Opcional)</label>
                 <input
                   type="file"
                   id="nova_imagem"
@@ -231,13 +204,7 @@ const ProductEditPage = () => {
                   disabled={isSaving}
                 />
                 {selectedFile && (
-                  <p
-                    style={{
-                      fontSize: "0.85rem",
-                      color: "#666",
-                      marginTop: "5px",
-                    }}
-                  >
+                  <p style={{ fontSize: "0.85rem", color: "#666", marginTop: "5px" }}>
                     Novo arquivo: {selectedFile.name}
                   </p>
                 )}
@@ -256,7 +223,6 @@ const ProductEditPage = () => {
                   disabled={isSaving}
                 />
               </div>
-              {/* ... (2-6. Outros Campos: Preço, Peso, Categoria, Validade, Descrição - MANTIDOS) ... */}
 
               {/* 2. Campo PREÇO */}
               <div className="form-group">
@@ -306,9 +272,7 @@ const ProductEditPage = () => {
 
               {/* 5. Campo PRAZO DE VALIDADE */}
               <div className="form-group">
-                <label htmlFor="prazo_validade">
-                  Prazo de Validade (Ex: 3 meses)
-                </label>
+                <label htmlFor="prazo_validade">Prazo de Validade (Ex: 3 meses)</label>
                 <input
                   type="text"
                   id="prazo_validade"
@@ -334,11 +298,7 @@ const ProductEditPage = () => {
 
               {/* Botões de Ação */}
               <div className="form-actions full-width">
-                <button
-                  type="submit"
-                  className="save-button"
-                  disabled={isSaving}
-                >
+                <button type="submit" className="save-button" disabled={isSaving}>
                   {isSaving ? "Salvando..." : "Salvar Alterações"}
                 </button>
                 <button
