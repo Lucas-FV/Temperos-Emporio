@@ -9,6 +9,9 @@ import { ImPhone } from "react-icons/im";
 import { VscLocation } from "react-icons/vsc";
 import { HiMail } from "react-icons/hi";
 
+// Adicione aqui a URL da sua foto da loja (ex: Cloudinary ou na pasta public/)
+const OUR_STORY_IMAGE_URL = "https://caminho-da-sua-foto-da-loja.jpg"; 
+
 const ProductCard = ({ name, price }) => (
   <div className="product-card">
     <div className="product-image-placeholder"></div>
@@ -25,7 +28,7 @@ function LandingPage() {
     <div className="landing-page-container">
       <Navbar />
       <main className="landing-page">
-        {/* SEÇÃO 1: HERO (Agora com suporte para foto de fundo) */}
+        {/* SEÇÃO 1: HERO */}
         <section className="principal-section">
           <div className="principal-content">
             <h1 className="title">Descubra o Sabor da Tradição Artesanal</h1>
@@ -81,12 +84,15 @@ function LandingPage() {
             <p>
               Nossa missão é conectar produtores talentosos diretamente aos
               consumidores, preservando técnicas tradicionais e promovendo uma
-              alimentação mais consciente e saborosa.
+              alimentation mais consciente e saborosa.
             </p>
           </div>
           <div className="history-image-container">
-            {/* Aqui você pode depois trocar por uma foto real da loja no Cloudinary */}
-            <div className="history-placeholder"></div>
+            <img 
+              src="https://res.cloudinary.com/ddotkd48e/image/upload/v1774905627/FachadaEmporio_jr02e1.jpg" 
+              alt="Fachada da loja Temperos Empório Gourmet em Belo Horizonte" 
+              className="history-image" 
+            />
           </div>
         </section>
 
@@ -145,16 +151,16 @@ function LandingPage() {
               </div>
             </div>
 
-            {/* 🚨 SEU MAPA DO CLOUDINARY ENTRA AQUI */}
+            {/* SEU MAPA DO CLOUDINARY ENTRA AQUI */}
             <div className="map-placeholder-container">
               <a
-                href="https://maps.app.goo.gl/mUfz1CuAAdGTNwwR9"
+                href="https://maps.app.goo.gl/mUfz1CuAAdGTNwwR9" 
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <img
                   src="https://res.cloudinary.com/ddotkd48e/image/upload/v1774903840/PostGoogleMaps_oy8qqw.jpg"
-                  alt="Avalie-nos no Google Mapas"
+                  alt="Avalie o Temperos Empório Gourmet no Google Mapas"
                   className="map-image-display"
                 />
               </a>
