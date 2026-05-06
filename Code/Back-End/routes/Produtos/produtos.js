@@ -1,80 +1,95 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../../middleware/upload"); // Nosso middleware agora com Cloudinary
-const Produto = require("../../models/Produto"); // Model do MongoDB
+const upload = require("../../middleware/upload");
+const Produto = require("../../models/Produto");
 
 // ==========================================
-// Rota DELETE (Remover Produto)
+// Rota DELETE
 // ==========================================
 router.delete("/:id", async (req, res) => {
   try {
     const produto = await Produto.findByIdAndDelete(req.params.id);
-
     if (!produto) {
-      return res.status(404).json({ success: false, message: "Produto não encontrado para exclusão." });
+      return res.status(404).json({ success: false, message: "Produto não encontrado." });
     }
-
     res.status(200).json({ success: true, message: "Produto deletado com sucesso!", produtoId: req.params.id });
   } catch (error) {
-    console.error(`Erro ao deletar produto ${req.params.id}:`, error);
-    res.status(500).json({ success: false, message: "ID inválido ou erro interno do servidor." });
+    res.status(500).json({ success: false, message: "Erro interno do servidor." });
   }
 });
 
 // ==========================================
-// Rota PUT (Atualizar Produto)
+// 🚨 Rota PUT (Atualizar Produto - Agora suporta Imagem e Destaque!)
 // ==========================================
-router.put("/:id", async (req, res) => {
-  const { nome, preco } = req.body;
+router.put("/:id", upload.single("imagem"), async (req, res) => {
+  const { nome, preco, destaque } = req.body;
+  const isDestaque = destaque === 'true' || destaque === true; // Converte para booleano
 
   if (!nome || !preco) {
     return res.status(400).json({ success: false, message: "Nome e preço são obrigatórios." });
   }
 
   try {
-    const produtoAtualizado = await Produto.findByIdAndUpdate(req.params.id, req.body, { new: true });
-
-    if (!produtoAtualizado) {
-      return res.status(404).json({ success: false, message: "Produto não encontrado para atualização." });
+    // TRAVA DO DESTAQUE: Verifica se já existem 5 destaques (excluindo o próprio produto que estamos editando)
+    if (isDestaque) {
+      const qtdDestaques = await Produto.countDocuments({ destaque: true, _id: { $ne: req.params.id } });
+      if (qtdDestaques >= 5) {
+        return res.status(400).json({ success: false, message: "Limite máximo de 5 produtos em destaque atingido." });
+      }
     }
 
-    res.status(200).json({ success: true, message: "Produto atualizado com sucesso!" });
+    // Prepara os dados novos
+    const dadosAtualizacao = { ...req.body, destaque: isDestaque };
+
+    // Se o usuário mandou uma imagem nova, atualiza o link
+    if (req.file) {
+      dadosAtualizacao.imagem_url = req.file.path;
+    }
+
+    const produtoAtualizado = await Produto.findByIdAndUpdate(req.params.id, dadosAtualizacao, { new: true });
+
+    if (!produtoAtualizado) {
+      return res.status(404).json({ success: false, message: "Produto não encontrado." });
+    }
+
+    res.status(200).json({ 
+      success: true, 
+      message: "Produto atualizado com sucesso!",
+      imagemUrl: produtoAtualizado.imagem_url // Devolve a imagem atualizada pro frontend
+    });
   } catch (error) {
-    console.error(`Erro ao atualizar produto ${req.params.id}:`, error);
-    res.status(500).json({ success: false, message: "ID inválido ou erro interno do servidor." });
+    console.error(`Erro ao atualizar produto:`, error);
+    res.status(500).json({ success: false, message: "Erro interno do servidor." });
   }
 });
 
 // ==========================================
-// ROTA GET /:id (Buscar um produto específico)
+// ROTA GET /:id (Buscar um)
 // ==========================================
 router.get("/:id", async (req, res) => {
   try {
     const produto = await Produto.findById(req.params.id);
-
     if (!produto) {
       return res.status(404).json({ success: false, message: "Produto não encontrado." });
     }
 
-    // Convertendo para objeto puro e criando a propriedade 'id' para o Front-End não quebrar
     const produtoFormatado = produto.toObject();
     produtoFormatado.id = produtoFormatado._id;
 
     res.status(200).json({ success: true, produto: produtoFormatado });
   } catch (error) {
-    console.error(`Erro ao buscar produto ${req.params.id}:`, error);
-    res.status(500).json({ success: false, message: "ID inválido ou erro interno do servidor." });
+    res.status(500).json({ success: false, message: "Erro interno do servidor." });
   }
 });
 
 // ==========================================
-// Rota GET / (Listar todos os produtos)
+// Rota GET / (Listar todos)
 // ==========================================
 router.get("/", async (req, res) => {
   try {
-    // Adicionamos o 'imagem_url' no select para que a imagem apareça na listagem do Front-End!
+    // Trazemos o campo 'destaque' para o Front-End saber quem é quem
     const produtos = await Produto.find()
-      .select('nome preco peso categoria imagem_url') 
+      .select('nome preco peso categoria imagem_url destaque') 
       .sort({ nome: 1 });
 
     const produtosFormatados = produtos.map(p => ({
@@ -83,31 +98,36 @@ router.get("/", async (req, res) => {
       preco: p.preco,
       peso: p.peso,
       categoria: p.categoria,
-      imagem_url: p.imagem_url // Repassando a URL da imagem para o frontend
+      imagem_url: p.imagem_url,
+      destaque: p.destaque 
     }));
 
     res.status(200).json({ success: true, produtos: produtosFormatados });
   } catch (error) {
-    console.error("Erro ao listar produtos:", error);
-    res.status(500).json({ success: false, message: "Erro interno do servidor ao listar produtos." });
+    res.status(500).json({ success: false, message: "Erro interno." });
   }
 });
 
 // ==========================================
-// Rota POST (Cadastrar Novo Produto)
+// 🚨 Rota POST (Cadastrar Novo Produto)
 // ==========================================
 router.post("/", upload.single("imagem"), async (req, res) => {
-  const { nome, descricao, preco, peso, categoria, prazo_validade } = req.body;
-  
-  // 🚨 AQUI ESTÁ A MÁGICA DO CLOUDINARY:
-  // req.file.path agora contém a URL completa da imagem hospedada na nuvem!
+  const { nome, descricao, preco, peso, categoria, prazo_validade, destaque } = req.body;
   const imagemPath = req.file ? req.file.path : null;
+  const isDestaque = destaque === 'true' || destaque === true;
 
   if (!nome || !preco) {
     return res.status(400).json({ success: false, message: "Nome e preço são obrigatórios." });
   }
 
   try {
+    if (isDestaque) {
+      const qtdDestaques = await Produto.countDocuments({ destaque: true });
+      if (qtdDestaques >= 5) {
+        return res.status(400).json({ success: false, message: "Limite máximo de 5 produtos em destaque atingido." });
+      }
+    }
+
     const novoProduto = await Produto.create({
       nome,
       descricao,
@@ -115,7 +135,8 @@ router.post("/", upload.single("imagem"), async (req, res) => {
       peso,
       categoria,
       prazo_validade,
-      imagem_url: imagemPath // Salvando o link direto no MongoDB
+      imagem_url: imagemPath,
+      destaque: isDestaque
     });
 
     res.status(201).json({
@@ -125,7 +146,7 @@ router.post("/", upload.single("imagem"), async (req, res) => {
       imagemUrl: imagemPath,
     });
   } catch (error) {
-    console.error("Erro ao cadastrar produto:", error);
+    console.error("Erro ao cadastrar:", error);
     res.status(500).json({ success: false, message: "Erro interno do servidor." });
   }
 });

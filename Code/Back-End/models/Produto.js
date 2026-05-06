@@ -8,7 +8,8 @@ const ProdutoSchema = new mongoose.Schema({
     peso: { type: String },
     categoria: { type: String },
     prazo_validade: { type: String },
-    imagem_url: { type: String }, // É aqui que vamos guardar o caminho da imagem!
+    imagem_url: { type: String },
+    destaque: { type: Boolean, default: false },
     data_cadastro: { type: Date, default: Date.now }
 });
 

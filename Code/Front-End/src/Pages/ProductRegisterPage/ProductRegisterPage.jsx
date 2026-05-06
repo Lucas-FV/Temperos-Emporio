@@ -12,20 +12,27 @@ const ProductRegisterPage = () => {
     peso: "",
     categoria: "",
     prazo_validade: "",
+    destaque: false, // 🚨 NOVO: Estado para o destaque
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  // Manipula a mudança em qualquer campo do formulário
+  // Manipula a mudança em campos de texto e select
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Manipula o arquivo de imagem
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
+  };
+
+  // Manipula o clique no botão Switch (Toggle)
+  const handleToggleDestaque = () => {
+    setFormData((prev) => ({ ...prev, destaque: !prev.destaque }));
   };
 
   const handleSubmit = async (e) => {
@@ -34,19 +41,17 @@ const ProductRegisterPage = () => {
     setIsError(false);
     setLoading(true);
 
-    // 🚨 1. Cria o objeto FormData para enviar texto e arquivo
     const formPayload = new FormData();
 
-    // Anexa os campos de texto:
+    // Anexa os campos de texto e o booleano de destaque
     formPayload.append("nome", formData.nome);
     formPayload.append("descricao", formData.descricao);
-    // Garante que o preço seja enviado como string ou número (FormData trata)
     formPayload.append("preco", parseFloat(formData.preco) || 0);
     formPayload.append("peso", formData.peso);
     formPayload.append("categoria", formData.categoria);
     formPayload.append("prazo_validade", formData.prazo_validade);
+    formPayload.append("destaque", formData.destaque); // 🚨 ENVIA O DESTAQUE
 
-    // 2. Anexa o arquivo (Campo 'imagem' deve bater com o Multer)
     if (selectedFile) {
       formPayload.append("imagem", selectedFile);
     }
@@ -54,9 +59,8 @@ const ProductRegisterPage = () => {
     try {
       const response = await axios.post(
         "http://localhost:3000/produtos",
-        formPayload, // 🚨 ENVIA O FORM DATA
+        formPayload,
         {
-          // 🚨 Cabeçalho para informar o servidor sobre o tipo de dado
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -67,7 +71,7 @@ const ProductRegisterPage = () => {
         setMessage("✅ Produto cadastrado com sucesso!");
         setIsError(false);
 
-        // 3. Limpa o formulário e o estado do arquivo após o sucesso
+        // Limpa o formulário
         setFormData({
           nome: "",
           descricao: "",
@@ -75,17 +79,17 @@ const ProductRegisterPage = () => {
           peso: "",
           categoria: "",
           prazo_validade: "",
+          destaque: false,
         });
-        setSelectedFile(null); // Limpa o estado do arquivo
+        setSelectedFile(null);
 
-        // Opcional: Redirecionar após um breve sucesso
         setTimeout(() => {
           navigate("/admin/produtos");
         }, 1500);
       }
     } catch (error) {
       console.error("Erro no cadastro:", error);
-      // Trata erros de validação do backend ou de servidor
+      // Aqui o erro de "Limite de 5 produtos" vindo do backend será exibido
       const msg =
         error.response?.data?.message ||
         "Erro ao conectar com o servidor. Verifique os dados.";
@@ -109,15 +113,13 @@ const ProductRegisterPage = () => {
 
       <main className="register-main">
         <div className="register-card">
-          {/* Mensagem de Feedback */}
           {message && (
-            <p className={`feedback-message ${isError ? "error" : "success"}`}>
-              {message}
-            </p>
+            <div className={`notification-container ${isError ? "error" : "success"}`}>
+               <p>{message}</p>
+            </div>
           )}
 
           <form onSubmit={handleSubmit} className="product-form">
-            {/* Campo Nome */}
             <div className="form-group">
               <label htmlFor="nome">Nome do Produto</label>
               <input
@@ -130,7 +132,6 @@ const ProductRegisterPage = () => {
               />
             </div>
 
-            {/* Campo Preço */}
             <div className="form-group">
               <label htmlFor="preco">Preço (R$)</label>
               <input
@@ -144,7 +145,6 @@ const ProductRegisterPage = () => {
               />
             </div>
 
-            {/* Campo Peso/Volume */}
             <div className="form-group">
               <label htmlFor="peso">Peso/Volume (Ex: 250g)</label>
               <input
@@ -156,13 +156,10 @@ const ProductRegisterPage = () => {
               />
             </div>
 
-            {/* Campo Prazo de Validade */}
             <div className="form-group">
-              <label htmlFor="prazo_validade">
-                Prazo de Validade (Ex: 3 meses)
-              </label>
+              <label htmlFor="prazo_validade">Prazo de Validade</label>
               <input
-                type="text" // Tipo text para inserir a string "3 meses"
+                type="text"
                 id="prazo_validade"
                 name="prazo_validade"
                 value={formData.prazo_validade}
@@ -170,7 +167,6 @@ const ProductRegisterPage = () => {
               />
             </div>
 
-            {/* Campo Categoria */}
             <div className="form-group">
               <label htmlFor="categoria">Categoria</label>
               <select
@@ -187,34 +183,46 @@ const ProductRegisterPage = () => {
               </select>
             </div>
 
-            {/* Campo Descrição */}
             <div className="form-group full-width">
               <label htmlFor="descricao">Descrição Detalhada</label>
               <textarea
                 id="descricao"
                 name="descricao"
-                rows="4"
+                rows="3"
                 value={formData.descricao}
                 onChange={handleChange}
               ></textarea>
             </div>
+
+            {/* 🚨 NOVO: CAMPO DE DESTAQUE (SWITCH/TOGGLE) */}
+            <div className="form-group full-width">
+              <label>Produto em Destaque (Aparece na página inicial - Máx 5)</label>
+              <div className="toggle-container">
+                <label className="toggle-switch">
+                  <input
+                    type="checkbox"
+                    checked={formData.destaque}
+                    onChange={handleToggleDestaque}
+                  />
+                  <span className="slider"></span>
+                </label>
+                <span className="toggle-label-text">
+                  {formData.destaque ? "Sim (Ativado)" : "Não (Desativado)"}
+                </span>
+              </div>
+            </div>
+
             <div className="form-group full-width">
               <label htmlFor="imagem">Imagem do Produto</label>
               <input
                 type="file"
                 id="imagem"
-                name="imagem" // Deve ser 'imagem' para Multer
+                name="imagem"
                 onChange={handleFileChange}
-                accept="image/*" // Permite apenas arquivos de imagem
+                accept="image/*"
               />
               {selectedFile && (
-                <p
-                  style={{
-                    fontSize: "0.85rem",
-                    color: "#666",
-                    marginTop: "5px",
-                  }}
-                >
+                <p className="file-selected-text">
                   Arquivo selecionado: {selectedFile.name}
                 </p>
               )}

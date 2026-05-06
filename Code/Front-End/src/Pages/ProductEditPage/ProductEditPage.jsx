@@ -20,9 +20,11 @@ const ProductEditPage = () => {
     peso: "",
     categoria: "",
     prazo_validade: "",
-    imagem_url: "", // Guarda a URL da nuvem existente
+    imagem_url: "", 
+    destaque: false, // 🚨 ADICIONADO: Estado inicial do destaque
   });
-  const [selectedFile, setSelectedFile] = useState(null); // Para o novo arquivo
+  
+  const [selectedFile, setSelectedFile] = useState(null);
   const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -48,6 +50,7 @@ const ProductEditPage = () => {
             categoria: data.categoria || "",
             prazo_validade: data.prazo_validade || "",
             imagem_url: data.imagem_url || "",
+            destaque: data.destaque || false, // 🚨 CARREGA O STATUS DO BANCO
           });
           setError(null);
         } else {
@@ -64,10 +67,15 @@ const ProductEditPage = () => {
     fetchProduct(); 
   }, [id]);
 
-  // Manipula a mudança em campos de texto
+  // Manipula a mudança em campos de texto e select
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // 🚨 Manipula o clique no botão Switch (Toggle)
+  const handleToggleDestaque = () => {
+    setFormData((prev) => ({ ...prev, destaque: !prev.destaque }));
   };
 
   // Captura o arquivo selecionado
@@ -97,6 +105,7 @@ const ProductEditPage = () => {
       submitPayload.append("peso", formData.peso);
       submitPayload.append("categoria", formData.categoria);
       submitPayload.append("prazo_validade", formData.prazo_validade);
+      submitPayload.append("destaque", formData.destaque); // 🚨 ENVIA O DESTAQUE
       
       config = { headers: { "Content-Type": "multipart/form-data" } };
 
@@ -105,6 +114,7 @@ const ProductEditPage = () => {
       submitPayload = {
         ...formData,
         preco: parseFloat(formData.preco) || 0,
+        destaque: formData.destaque, // 🚨 ENVIA O DESTAQUE
       };
     }
 
@@ -136,6 +146,7 @@ const ProductEditPage = () => {
         }, 2000);
       }
     } catch (error) {
+      // Exibe a mensagem de erro que vem do Backend (ex: limite de 5 destaques)
       const msg = error.response?.data?.message || "Erro ao conectar com o servidor. Verifique os dados.";
       setMessage(`❌ ${msg}`);
       setIsError(true);
@@ -169,7 +180,6 @@ const ProductEditPage = () => {
           {/* Coluna de Detalhes Visuais */}
           <div className="visual-details">
             <div className="image-placeholder">
-              {/* 🚨 A MÁGICA ACONTECE AQUI: Chamamos a URL diretamente! */}
               {product.imagem_url ? (
                 <img
                   src={product.imagem_url}
@@ -186,6 +196,13 @@ const ProductEditPage = () => {
               <span className="product-peso-display">{product.peso}</span>
               <h3 className="description-title">Descrição</h3>
               <p className="product-description-display">{product.descricao}</p>
+              
+              {/* Mostra um selinho visual caso o produto seja destaque */}
+              {product.destaque && (
+                 <p style={{marginTop: '10px', color: '#4CAF50', fontWeight: 'bold'}}>
+                   ⭐ Este produto está em destaque na Home!
+                 </p>
+              )}
             </div>
           </div>
 
@@ -208,6 +225,25 @@ const ProductEditPage = () => {
                     Novo arquivo: {selectedFile.name}
                   </p>
                 )}
+              </div>
+
+              {/* 🚨 NOVO: CAMPO DE DESTAQUE (SWITCH/TOGGLE) */}
+              <div className="form-group full-width">
+                <label>Produto em Destaque (Aparece na página inicial - Máx 5)</label>
+                <div className="toggle-container">
+                  <label className="toggle-switch">
+                    <input
+                      type="checkbox"
+                      checked={formData.destaque}
+                      onChange={handleToggleDestaque}
+                      disabled={isSaving}
+                    />
+                    <span className="slider"></span>
+                  </label>
+                  <span className="toggle-label-text">
+                    {formData.destaque ? "Sim (Ativado)" : "Não (Desativado)"}
+                  </span>
+                </div>
               </div>
 
               {/* 1. Campo NOME */}

@@ -87,7 +87,7 @@ html {
 }
 
 /* ------------------------------------------------------------------ */
-/* SEÇÃO 2: PRODUTOS (Design mais limpo e leve) */
+/* SEÇÃO 2: PRODUTOS (Design ajustado e corrigido) */
 /* ------------------------------------------------------------------ */
 
 .products-section {
@@ -97,7 +97,9 @@ html {
 
 .header-content {
   text-align: center;
-  margin-bottom: 4rem;
+  /* Reduzimos a margin e adicionamos padding para evitar colapso de margens com o grid */
+  margin-bottom: 3rem; 
+  padding-bottom: 1rem; 
 }
 
 .section-title {
@@ -110,46 +112,61 @@ html {
 .section-description {
   font-size: 1.1rem;
   color: #666;
-  max-width: 600px;
+  max-width: 700px; /* Um pouquinho mais largo para o texto respirar melhor */
   margin: 0 auto;
   font-weight: 300;
+  line-height: 1.6;
 }
 
 .products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2.5rem;
-  max-width: 1200px;
+  display: flex; /* 🚨 Trocamos de grid para flex */
+  flex-wrap: wrap; /* Permite que os cards quebrarem para a linha de baixo */
+  justify-content: center; /* 👈 A MÁGICA: Centraliza a linha de baixo! */
+  gap: 2rem;
+  max-width: 1200px; /* Aumentei um pouquinho para dar mais respiro */
   margin: 0 auto;
 }
 
 .product-card {
   background-color: white;
   border-radius: 16px;
-  overflow: hidden; /* Garante que a imagem não vaze nas bordas arredondadas */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  overflow: hidden; 
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 1px solid rgba(0,0,0,0.02); /* Borda super sutil ao invés de cinza forte */
+  border: 1px solid rgba(0,0,0,0.02); 
+  display: flex;
+  flex-direction: column; /* Garante que o conteúdo empilhe perfeitamente */
 }
 
 .product-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 15px 30px rgba(145, 48, 44, 0.1); /* Sombra elegante usando a cor da marca */
+  box-shadow: 0 15px 30px rgba(145, 48, 44, 0.1); 
 }
 
 .product-image-placeholder {
   width: 100%;
-  height: 220px;
+  height: 180px; /* 🚨 Reduzido de 220px para 180px. Deixa o card mais elegante e menos "trambolho" */
   background-color: #f0f0f0;
+  overflow: hidden; /* Garante que a foto não vaze o topo arredondado */
+}
+
+/* Força a imagem gerada pelo React a respeitar o container perfeitamente */
+.product-image-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .product-info {
   padding: 1.5rem;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Faz o texto preencher o espaço se um nome for menor que o outro */
 }
 
 .product-name {
-  font-weight: 500;
+  font-weight: 600; /* Um pouco mais forte para leitura */
   font-size: 1.1rem;
   color: #333;
   margin: 0 0 0.5rem 0;
@@ -172,6 +189,7 @@ html {
   width: 100%;
   font-weight: 500;
   transition: all 0.3s ease;
+  margin-top: auto; /* Empurra o botão sempre pro fundo do card, alinhando todos! */
 }
 
 .product-button:hover {

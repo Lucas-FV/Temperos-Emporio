@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Navbar from "../../Componentes/Navbar/Navbar";
 import Footer from "../../Componentes/Footer/Footer";
 import "./LandingPage.css";
@@ -9,21 +10,51 @@ import { ImPhone } from "react-icons/im";
 import { VscLocation } from "react-icons/vsc";
 import { HiMail } from "react-icons/hi";
 
-// Adicione aqui a URL da sua foto da loja (ex: Cloudinary ou na pasta public/)
-const OUR_STORY_IMAGE_URL = "https://caminho-da-sua-foto-da-loja.jpg"; 
-
-const ProductCard = ({ name, price }) => (
+// 🚨 COMPONENTE DO CARD ATUALIZADO (Agora recebe a imagem!)
+const ProductCard = ({ name, price, imageUrl }) => (
   <div className="product-card">
-    <div className="product-image-placeholder"></div>
+    <div className="product-image-placeholder">
+      {/* Se tiver imagem no banco, ele mostra. Se não, mostra o fundo vazio. */}
+      {imageUrl && (
+        <img 
+          src={imageUrl} 
+          alt={name} 
+          style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px 8px 0 0" }} 
+        />
+      )}
+    </div>
     <div className="product-info">
       <p className="product-name">{name}</p>
-      <p className="product-price">{price}</p>
+      {/* Formata o preço para o padrão brasileiro (R$ 0,00) */}
+      <p className="product-price">R$ {Number(price).toFixed(2).replace('.', ',')}</p>
       <button className="product-button">Comprar</button>
     </div>
   </div>
 );
 
 function LandingPage() {
+  // 🚨 1. Estado para guardar os produtos em destaque
+  const [produtosDestaque, setProdutosDestaque] = useState([]);
+
+  // 🚨 2. Busca os produtos no Back-End quando a página carrega
+  useEffect(() => {
+    const buscarDestaques = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/produtos");
+        
+        if (response.data.success) {
+          // Filtra a lista inteira para pegar APENAS os que são destaque
+          const apenasDestaques = response.data.produtos.filter(p => p.destaque === true);
+          setProdutosDestaque(apenasDestaques);
+        }
+      } catch (error) {
+        console.error("Erro ao carregar os produtos em destaque:", error);
+      }
+    };
+
+    buscarDestaques();
+  }, []);
+
   return (
     <div className="landing-page-container">
       <Navbar />
@@ -56,12 +87,25 @@ function LandingPage() {
               todos feitos com ingredientes selecionados e técnicas artesanais.
             </p>
           </div>
+          
           <div className="products-grid">
-            <ProductCard name="Geleia Rústica de Morango" price="R$ 25,90" />
-            <ProductCard name="Queijo Canastra Curado" price="R$ 45,00" />
-            <ProductCard name="Mix de Pimentas Especiais" price="R$ 18,50" />
-            <ProductCard name="Azeite Trufado Artesanal" price="R$ 89,90" />
+            {/* 🚨 3. Loop mágico: Cria um card para cada produto em destaque! */}
+            {produtosDestaque.length > 0 ? (
+              produtosDestaque.map((produto) => (
+                <ProductCard 
+                  key={produto.id} 
+                  name={produto.nome} 
+                  price={produto.preco} 
+                  imageUrl={produto.imagem_url}
+                />
+              ))
+            ) : (
+              <p style={{ gridColumn: "1 / -1", textAlign: "center", color: "#666" }}>
+                Nenhum produto em destaque no momento.
+              </p>
+            )}
           </div>
+          
           <div className="view-all-container">
             <button className="view-all-button">Ver Catálogo Completo</button>
           </div>
@@ -84,7 +128,7 @@ function LandingPage() {
             <p>
               Nossa missão é conectar produtores talentosos diretamente aos
               consumidores, preservando técnicas tradicionais e promovendo uma
-              alimentation mais consciente e saborosa.
+              alimentação mais consciente e saborosa.
             </p>
           </div>
           <div className="history-image-container">
