@@ -1,0 +1,339 @@
+/* =========================================
+   ESTRUTURA GERAL DA PÁGINA
+   ========================================= */
+.products-page-container {
+  background-color: #fafafa;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+.products-header {
+  background-color: #91302c; /* Vermelho do Empório */
+  color: white;
+  padding: 4rem 8%;
+}
+
+.products-header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.products-header h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.products-header p {
+  font-size: 1.1rem;
+  font-weight: 300;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.products-main-layout {
+  display: flex;
+  gap: 2.5rem;
+  max-width: 1300px;
+  margin: 3rem auto;
+  padding: 0 8%;
+  align-items: flex-start; /* Impede que a sidebar estique com o grid */
+}
+
+/* =========================================
+   SIDEBAR (FILTROS)
+   ========================================= */
+.filters-sidebar {
+  width: 280px;
+  background-color: white;
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(0,0,0,0.08);
+  flex-shrink: 0;
+}
+
+.filters-sidebar h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+.filter-group {
+  margin-bottom: 1.5rem;
+}
+
+.filter-title {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.filter-divider {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 1.5rem 0;
+}
+
+/* Input de Busca */
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: #999;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-input-wrapper input:focus {
+  border-color: #91302c;
+}
+
+/* Checkboxes Customizadas (Baseadas na imagem) */
+.checkbox-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #555;
+  user-select: none;
+}
+
+.checkbox-item input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  height: 18px;
+  width: 18px;
+  background-color: white;
+  border: 2px solid #91302c; /* Borda vermelha do mock */
+  border-radius: 4px;
+}
+
+.checkbox-item input:checked ~ .checkmark {
+  background-color: #91302c;
+}
+
+/* Slider de Preço */
+.price-slider {
+  width: 100%;
+  accent-color: #91302c; /* Deixa a barrinha do slider vermelha */
+  cursor: pointer;
+}
+
+.price-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+/* Botão Aplicar */
+.apply-filters-btn {
+  width: 100%;
+  background-color: #91302c;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+.apply-filters-btn:hover {
+  background-color: #7a2825;
+}
+
+/* =========================================
+   GRID DE PRODUTOS
+   ========================================= */
+.products-grid-area {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+/* O Card Individual (Estilo Figma) */
+.catalog-card {
+  background-color: white;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.catalog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.catalog-image-area {
+  background-color: #d9d9d9; /* Cor cinza placeholder da sua imagem */
+  border-radius: 8px;
+  height: 180px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.catalog-image-area img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-placeholder-icon {
+  font-size: 2rem;
+  color: #999;
+}
+
+/* Badges sobre a imagem */
+.badge-destaque {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #91302c;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  z-index: 2;
+}
+
+.favorite-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 1.2rem;
+  color: #333;
+  cursor: pointer;
+  z-index: 2;
+  transition: color 0.3s;
+}
+
+.favorite-icon:hover {
+  color: #91302c;
+}
+
+/* Informações do Produto */
+.catalog-category {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.catalog-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0.4rem 0;
+}
+
+.catalog-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #91302c;
+  margin: 0 0 0.5rem 0;
+}
+
+.catalog-weight {
+  font-size: 0.75rem;
+  color: #999;
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+/* Botão Detalhes */
+.catalog-details-btn {
+  background-color: #91302c;
+  color: white;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: auto; /* Empurra pro fundo */
+  transition: background-color 0.3s;
+}
+
+.catalog-details-btn:hover {
+  background-color: #7a2825;
+}
+
+/* Estados Vazios / Loading */
+.loading-text {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  grid-column: 1 / -1;
+  margin-top: 2rem;
+}
+
+.no-products-found {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 3rem;
+  color: #666;
+}
+
+.clear-filters-btn {
+  background: transparent;
+  border: 1px solid #91302c;
+  color: #91302c;
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.clear-filters-btn:hover {
+  background: #fdf2f2;
+}

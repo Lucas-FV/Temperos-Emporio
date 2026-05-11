@@ -1,8 +1,8 @@
 // src/components/Navbar/Navbar.jsx
 
-import React, { useState, useEffect, useRef } from 'react'; // Importe useRef
-import { Link } from 'react-router-dom';
-import './Navbar.css';
+import React, { useState, useEffect, useRef } from "react"; // Importe useRef
+import { Link } from "react-router-dom";
+import "./Navbar.css";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -25,9 +25,9 @@ const Navbar = () => {
       // Quando o dropdown está fechando e animando
       const handler = () => {
         setAnimating(false);
-        dropdownRef.current.removeEventListener('animationend', handler);
+        dropdownRef.current.removeEventListener("animationend", handler);
       };
-      dropdownRef.current.addEventListener('animationend', handler);
+      dropdownRef.current.addEventListener("animationend", handler);
     } else if (animating && dropdownOpen) {
       // Quando o dropdown está abrindo
       setAnimating(false); // A animação de entrada não precisa de um ouvinte para terminar de verdade
@@ -37,43 +37,56 @@ const Navbar = () => {
   // Fechar dropdown ao clicar fora
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target) && event.target.closest('.dropdown-toggle') !== dropdownRef.current) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        event.target.closest(".dropdown-toggle") !== dropdownRef.current
+      ) {
         if (dropdownOpen) {
           setAnimating(true); // Inicia animação de saída
           setDropdownOpen(false); // Fecha o dropdown (o CSS vai lidar com a animação)
         }
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownOpen]);
-
 
   return (
     <nav className="navbar">
       <div className="navbar-left">
         <h1 className="navbar-logo">Temperos Empório Gourmet</h1>
         <div className="navbar-links-container">
-          <a href="/" className="navbar-link">Início</a>
-          <a href="#historia" className="navbar-link">Sobre</a>
+          <a href="/" className="navbar-link">
+            Início
+          </a>
+          <a href="#historia" className="navbar-link">
+            Sobre
+          </a>
           <div className="dropdown-container">
-            <span className="navbar-link dropdown-toggle" onClick={toggleDropdown}>
+            <span
+              className="navbar-link dropdown-toggle"
+              onClick={toggleDropdown}
+            >
               Serviços <span className="arrow-down">▼</span>
             </span>
             {/* Renderiza o dropdown apenas se estiver aberto OU animando */}
             {(dropdownOpen || animating) && (
               <div
                 ref={dropdownRef} // Atribui a ref ao elemento
-                className={`dropdown-menu ${dropdownOpen ? 'dropdown-enter' : 'dropdown-exit'}`}
+                className={`dropdown-menu ${dropdownOpen ? "dropdown-enter" : "dropdown-exit"}`}
                 onAnimationEnd={() => {
                   if (!dropdownOpen && animating) {
                     setAnimating(false);
                   }
                 }}
               >
-                <a href="/servicos/item1" className="dropdown-item">Produtos</a>
+                <a href="/produtos" className="navbar-link">
+                  Produtos
+                </a>
+
                 {/* Adicione mais itens aqui */}
               </div>
             )}
@@ -81,8 +94,8 @@ const Navbar = () => {
         </div>
       </div>
       <div className="navbar-right">
-        <Link to={"/login"} className='login-button'>
-            Login
+        <Link to={"/login"} className="login-button">
+          Login
         </Link>
       </div>
     </nav>

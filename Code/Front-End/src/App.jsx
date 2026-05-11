@@ -7,6 +7,7 @@ import AdminPage from "./Pages/AdminPage/AdminPage";
 import ProductListPage from "./Pages/ProducListPage/ProductListPage";
 import ProductRegisterPage from "./Pages/ProductRegisterPage/ProductRegisterPage";
 import ProductEditPage from "./Pages/ProductEditPage/ProductEditPage";
+import ProductsPage from "./Pages/AllProductsPage/AllProductsPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       {/* ROTAS PUBLICAS */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/produtos" element={<ProductsPage />} />
 
       {/* ROTAS PROTEGIDAS */}
       <Route element={<ProtectedRoute/>}>
